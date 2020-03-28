@@ -1,0 +1,7 @@
+#pragma once
+
+#define AK_VER_MAJOR 1
+#define AK_VER_MINOR 0
+#define AK_VER_PATCH 0
+
+#define AK_VERSION (AK_VER_MAJOR * 10000 + AK_VER_MINOR * 100 + AK_VER_PATCH)

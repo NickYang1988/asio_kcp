@@ -1,3 +1,7 @@
+# asio_kcp - XD
+
+> This version is a reunit version, all code is the same with the original repo beside dir structure and dependencies.
+
 ### asio_kcp - a fast and reliable udp framework. 
 #### This framework will be the fastest protocal for pvp game.
 

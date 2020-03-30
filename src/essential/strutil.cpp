@@ -4,8 +4,8 @@
 #include <sstream>
 #include <iomanip>
 
-#include "../../check_function.h"
-#include "../../utility/strutil.h"
+#include "check_function.h"
+#include "strutil.h"
 
 BEGIN_ES_NAMESPACE
 

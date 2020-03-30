@@ -1,5 +1,5 @@
-#ifndef _CHECK_FUNCTION_H_
-#define _CHECK_FUNCTION_H_
+#pragma once
+
 #include <exception>
 #include <string>
 #include <string.h>
@@ -61,5 +61,3 @@ void _excption_check(
 }
 
 END_ES_NAMESPACE
-
-#endif

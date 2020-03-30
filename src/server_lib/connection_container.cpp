@@ -5,7 +5,7 @@
 #include <sys/time.h>
 
 #include "connection_container.hpp"
-#include "essential/utility/strutil.h"
+#include "essential/strutil.h"
 #include "kcp/ikcp.h"
 
 namespace kcp_svr {

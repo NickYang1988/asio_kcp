@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 #include "server.hpp"
-#include "essential/utility/strutil.h"
+#include "essential/strutil.h"
 #include "connection_manager.hpp"
 
 namespace kcp_svr {

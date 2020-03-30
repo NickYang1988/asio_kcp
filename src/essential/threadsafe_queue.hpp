@@ -1,11 +1,11 @@
 #pragma once
 
-#include "es_config.h"
-
 #include <queue>
 #include <memory>
 #include <mutex>
 #include <condition_variable>
+
+#include "es_config.h"
 
 BEGIN_ES_NAMESPACE
 
@@ -18,7 +18,7 @@ private:
     std::condition_variable data_cond;
 
 public:
-    threadsafe_queue() {}
+    threadsafe_queue() = default;
     threadsafe_queue(threadsafe_queue const& other)
     {
         std::lock_guard<std::mutex> lk(other.mut);

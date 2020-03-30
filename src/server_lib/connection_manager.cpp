@@ -7,7 +7,7 @@
 
 #include "kcp/ikcp.h"
 
-#include "essential/utility/strutil.h"
+#include "essential/strutil.h"
 #include "essential/check_function.h"
 #include "util/connect_packet.hpp"
 #include "asio_kcp_log.hpp"

@@ -1,8 +1,9 @@
 #pragma once
-#include "../es_config.h"
 
 #include <string>
 #include <vector>
+
+#include "es_config.h"
 
 BEGIN_ES_NAMESPACE
 

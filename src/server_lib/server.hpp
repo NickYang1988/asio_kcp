@@ -1,10 +1,9 @@
-#ifndef KCP_SERVER_HPP
-#define KCP_SERVER_HPP
+#pragma once
 
-#include <boost/asio.hpp>
 #include <string>
 #include <memory>
 #include <boost/noncopyable.hpp>
+#include <boost/asio.hpp>
 #include "kcp_typedef.hpp"
 
 namespace kcp_svr {
@@ -62,5 +61,3 @@ private:
 };
 
 } // namespace kcp_svr
-
-#endif // KCP_SERVER_HPP

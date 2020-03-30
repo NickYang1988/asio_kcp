@@ -3,7 +3,7 @@
 // this queue is multithread safe. but it's not a efficient implement.
 
 #include <queue>
-#include "mutex.h"
+#include <mutex>
 
 namespace asio_kcp {
 
@@ -12,25 +12,26 @@ class threadsafe_queue_mutex
 {
 private:
     std::queue<T> data_queue;
+
 public:
-    threadsafe_queue_mutex(){}
+    threadsafe_queue_mutex() {}
 
     size_t size()
     {
-        MutexLockGuard guard(mutex_);
+        std::lock_guard guard(mutex_);
         return data_queue.size();
     }
     void push(T new_value)
     {
-        MutexLockGuard guard(mutex_);
+        std::lock_guard guard(mutex_);
         data_queue.push(new_value);
     }
     bool try_pop(T& value)
     {
-        MutexLockGuard guard(mutex_);
-        if(data_queue.empty())
+        std::lock_guard guard(mutex_);
+        if (data_queue.empty())
             return false;
-        value=data_queue.front();
+        value = data_queue.front();
         data_queue.pop();
         return true;
     }
@@ -39,7 +40,7 @@ public:
         std::queue<T> ret;
 
         {
-            MutexLockGuard guard(mutex_);
+            std::lock_guard guard(mutex_);
             std::swap(ret, data_queue);
         }
 
@@ -47,12 +48,12 @@ public:
     }
     bool empty() const
     {
-        MutexLockGuard guard(mutex_);
+        std::lock_guard guard(mutex_);
         return data_queue.empty();
     }
 
 private:
-    MutexLock mutex_;
+    std::mutex mutex_;
 };
 
-} // end of namespace asio_kcp
+} // namespace asio_kcp

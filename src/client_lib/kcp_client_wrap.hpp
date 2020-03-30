@@ -1,5 +1,4 @@
-#ifndef _ASIO_KCP_CLIENT_WRAP__
-#define _ASIO_KCP_CLIENT_WRAP__
+#pragma once
 
 #include "kcp_client.hpp"
 
@@ -117,5 +116,3 @@ private:
 };
 
 } // namespace asio_kcp
-
-#endif // _ASIO_KCP_CLIENT_WRAP__

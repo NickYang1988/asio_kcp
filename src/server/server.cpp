@@ -1,7 +1,7 @@
 #include <signal.h>
 #include <cstdlib>
 #include <iostream>
-#include "essential/utility/strutil.h"
+#include "essential/strutil.h"
 #include "server.hpp"
 
 server::server(const std::string& address, const std::string& port)

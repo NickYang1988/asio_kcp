@@ -1,5 +1,4 @@
-#ifndef _ASIO_KCP_KCP_CLIENT_
-#define _ASIO_KCP_KCP_CLIENT_
+#pragma once
 
 #include <stdint.h>
 #include <string>
@@ -155,5 +154,3 @@ private:
 };
 
 } // namespace asio_kcp
-
-#endif // _ASIO_KCP_KCP_CLIENT_

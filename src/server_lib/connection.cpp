@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#include "essential/utility/strutil.h"
+#include "essential/strutil.h"
 #include "kcp/ikcp.h"
 #include "util/connect_packet.hpp"
 #include "asio_kcp_log.hpp"

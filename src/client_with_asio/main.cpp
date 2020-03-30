@@ -2,7 +2,7 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
-#include "essential/utility/strutil.h"
+#include "essential/strutil.h"
 #include "client_with_asio.hpp"
 
 using boost::asio::ip::tcp;

@@ -7,15 +7,15 @@ const char* eventTypeStr(eEventType eventType)
     switch (eventType)
     {
         case eConnect:
-            return "eConnect";
+            return "Connect";
         case eDisconnect:
-            return "eDisconnect";
+            return "Disconnect";
         case eRcvMsg:
-            return "eRcvMsg";
+            return "Recv";
         case eLagNotify:
-            return "eLagNotify";
+            return "LagNotify";
         default:
-            return "unknown";
+            return "Unknown";
     }
 }
 

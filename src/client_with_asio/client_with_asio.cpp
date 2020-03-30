@@ -7,7 +7,7 @@
 #include <time.h>
 #include <unordered_map>
 
-#include "essential/utility/strutil.h"
+#include "essential/strutil.h"
 #include "kcp/ikcp.h"
 #include "test_util.h"
 #include "util/connect_packet.hpp"

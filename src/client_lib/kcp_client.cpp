@@ -1,4 +1,3 @@
-#include "kcp_client.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
@@ -10,8 +9,9 @@
 #include <string.h>
 
 #include "kcp/ikcp.h"
-#include "../util/connect_packet.hpp"
+#include "util/connect_packet.hpp"
 #include "kcp_client_util.h"
+#include "kcp_client.hpp"
 
 namespace asio_kcp {
 

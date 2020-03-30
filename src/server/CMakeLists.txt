@@ -26,7 +26,7 @@ else(UNIX)
         pthread dl)
 endif()
 
-set_target_properties(${project_name} PROPERTIES OUTPUT_NAME_DEBUG "server_d")
+set_target_properties(${project_name} PROPERTIES OUTPUT_NAME_DEBUG "${project_name}_d")
 set_target_properties(${project_name} PROPERTIES
     FOLDER "src"
 	ARCHIVE_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIR}

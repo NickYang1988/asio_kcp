@@ -45,11 +45,11 @@ static inline IUINT32 iclock()
     return (IUINT32)(iclock64() & 0xfffffffful);
 }
 
-std::string get_milly_sec_time_str(void)
-{
-    boost::posix_time::ptime ptime = boost::posix_time::microsec_clock::universal_time();
-    return boost::posix_time::to_iso_extended_string(ptime);
-}
+// std::string get_milly_sec_time_str(void)
+// {
+//     boost::posix_time::ptime ptime = boost::posix_time::microsec_clock::universal_time();
+//     return boost::posix_time::to_iso_extended_string(ptime);
+// }
 
 #define CLOCK_START_STR "!ha"
 #define CLOCK_INTERVAL_STR "_ha"

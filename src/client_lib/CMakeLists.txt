@@ -1,6 +1,7 @@
 set(project_name kcp_client)
 
 file(GLOB_RECURSE SRC_LIST *.h *.hpp *.cpp *.cc *.c)
+list(APPEND SRC_LIST ../util/connect_packet.cpp)
 
 add_library(${project_name} STATIC ${SRC_LIST})
 

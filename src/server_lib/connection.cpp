@@ -1,16 +1,15 @@
 #include <algorithm>
-#include <boost/bind.hpp>
-
-#include "connection.hpp"
-#include "essential/utility/strutil.h"
-#include "kcp/ikcp.h"
-#include "util/connect_packet.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <unistd.h>
 #include <sys/time.h>
+
+#include "essential/utility/strutil.h"
+#include "kcp/ikcp.h"
+#include "util/connect_packet.hpp"
 #include "asio_kcp_log.hpp"
 #include "connection_manager.hpp"
+#include "connection.hpp"
 
 namespace kcp_svr {
 
@@ -42,7 +41,7 @@ connection::shared_ptr connection::create(const std::weak_ptr<connection_manager
     const udp::endpoint& udp_remote_endpoint)
 {
     shared_ptr ptr = std::make_shared<connection>(manager_ptr);
-    if (ptr)
+    if (ptr != nullptr)
     {
         ptr->init_kcp(conv);
         ptr->set_udp_remote_endpoint(udp_remote_endpoint);

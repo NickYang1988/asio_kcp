@@ -44,7 +44,7 @@ void kcp_client::clean(void)
     }
 }
 
-void kcp_client::set_event_callback(const client_event_callback_t& event_callback_func, void* var)
+void kcp_client::set_event_callback(client_event_callback_t& event_callback_func, void* var)
 {
     pevent_func_ = &event_callback_func;
     event_callback_var_ = var;

@@ -7,7 +7,6 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
-
 #include "threadsafe_queue_mutex.hpp"
 
 struct IKCPCB;
@@ -17,17 +16,17 @@ typedef struct IKCPCB ikcpcb;
 typedef uint32_t kcp_conv_t;
 
 #define MAX_MSG_SIZE 1024 * 10
-#define KCP_UPDATE_INTERVAL 5 // milliseconds
+#define KCP_UPDATE_INTERVAL 5               // milliseconds
 #define KCP_RESEND_CONNECT_MSG_INTERVAL 500 // milliseconds
-#define KCP_CONNECT_TIMEOUT_TIME 5000 // milliseconds
+#define KCP_CONNECT_TIMEOUT_TIME 5000       // milliseconds
 
-#define KCP_ERR_ALREADY_CONNECTED       -2001
-#define KCP_ERR_ADDRESS_INVALID         -2002
-#define KCP_ERR_CREATE_SOCKET_FAIL      -2003
-#define KCP_ERR_SET_NON_BLOCK_FAIL      -2004
+#define KCP_ERR_ALREADY_CONNECTED -2001
+#define KCP_ERR_ADDRESS_INVALID -2002
+#define KCP_ERR_CREATE_SOCKET_FAIL -2003
+#define KCP_ERR_SET_NON_BLOCK_FAIL -2004
 
-#define KCP_ERR_CONNECT_FUNC_FAIL       -2010
-#define KCP_ERR_KCP_CONNECT_TIMEOUT     -2011
+#define KCP_ERR_CONNECT_FUNC_FAIL -2010
+#define KCP_ERR_KCP_CONNECT_TIMEOUT -2011
 
 #define KCP_CONNECT_TIMEOUT_MSG "connect timeout"
 
@@ -43,8 +42,8 @@ enum eEventType
 
     eCountOfEventType
 };
-typedef void(client_event_callback_t)(kcp_conv_t /*conv*/, eEventType /*event_type*/, const std::string& /*msg*/, void* /*var*/);
-
+typedef void(client_event_callback_t)(
+    kcp_conv_t /*conv*/, eEventType /*event_type*/, const std::string& /*msg*/, void* /*var*/);
 
 /*
  * using asio_kcp_client in a event-driven framework. You should hook a timer for calling the kcp_client.update()
@@ -92,7 +91,7 @@ public:
     ~kcp_client(void);
 
     // event_callback_func will be called in the thread which you call update()
-    void set_event_callback(const client_event_callback_t& event_callback_func, void* var);
+    void set_event_callback(client_event_callback_t& event_callback_func, void* var);
 
     // we use system giving local port from system if udp_port_bind == 0
     // return KCP_ERR_XXX if some error happen.
@@ -124,11 +123,9 @@ private:
     bool need_send_connect_packet(uint64_t cur_clock) const;
     void do_asio_kcp_connect(uint64_t cur_clock);
 
-
-    static int udp_output(const char *buf, int len, ikcpcb *kcp, void *user);
-    void send_udp_package(const char *buf, int len);
+    static int udp_output(const char* buf, int len, ikcpcb* kcp, void* user);
+    void send_udp_package(const char* buf, int len);
     void do_send_connect_packet(uint64_t cur_clock);
-
 
     void do_recv_udp_packet_in_loop(void);
     void do_send_msg_in_queue(void);

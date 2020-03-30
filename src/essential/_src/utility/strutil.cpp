@@ -9,166 +9,166 @@
 
 BEGIN_ES_NAMESPACE
 
-
-std::string GetFileSuffix( const std::string& fileName )
+std::string GetFileSuffix(const std::string& fileName)
 {
-	size_t dotIndex = fileName.rfind('.');
+    size_t dotIndex = fileName.rfind('.');
 
-	// Ã»ÓĞÕÒµ½.ºÅµÄÇé¿ö
-	if (dotIndex == std::string::npos)
-		return "";
+    // æ²¡æœ‰æ‰¾åˆ°.å·çš„æƒ…å†µ
+    if (dotIndex == std::string::npos)
+        return "";
 
-	// .ºÅÔÚ×îºóÒ»¸ö×Ö·ûµÄÇé¿ö
-	if (dotIndex == fileName.size() - 1)
-		return "";
+    // .å·åœ¨æœ€åä¸€ä¸ªå­—ç¬¦çš„æƒ…å†µ
+    if (dotIndex == fileName.size() - 1)
+        return "";
 
-	size_t suffixBeginPos = dotIndex + 1;
-	assert_check(suffixBeginPos < fileName.size(), "GetFileSuffix");
-	size_t suffixLen = fileName.size() - suffixBeginPos;
-	assert_check(suffixLen > 0, "GetFileSuffix");
-	assert_check(suffixLen < fileName.size() - 1, "GetFileSuffix");
-	return fileName.substr(suffixBeginPos, suffixLen);
+    size_t suffixBeginPos = dotIndex + 1;
+    assert_check(suffixBeginPos < fileName.size(), "GetFileSuffix");
+    size_t suffixLen = fileName.size() - suffixBeginPos;
+    assert_check(suffixLen > 0, "GetFileSuffix");
+    assert_check(suffixLen < fileName.size() - 1, "GetFileSuffix");
+    return fileName.substr(suffixBeginPos, suffixLen);
 }
 
 std::string GetFileWithoutSuffix(const std::string& fileName)
 {
-	size_t dotIndex = fileName.rfind('.');
+    size_t dotIndex = fileName.rfind('.');
 
-	// Ã»ÓĞÕÒµ½.ºÅµÄÇé¿ö
-	if (dotIndex == std::string::npos)
-		return "";
+    // æ²¡æœ‰æ‰¾åˆ°.å·çš„æƒ…å†µ
+    if (dotIndex == std::string::npos)
+        return "";
 
-	// .ºÅÔÚ×îºóÒ»¸ö×Ö·ûµÄÇé¿ö
-	if (dotIndex == fileName.size() - 1)
-		return "";
+    // .å·åœ¨æœ€åä¸€ä¸ªå­—ç¬¦çš„æƒ…å†µ
+    if (dotIndex == fileName.size() - 1)
+        return "";
 
-	std::string rst = fileName;
-	rst.resize(dotIndex);
-	return rst;
+    std::string rst = fileName;
+    rst.resize(dotIndex);
+    return rst;
 }
 
-// »ñÈ¡ÎÄ¼şµÄÂ·¾¶Ãû. ÊäÈë"c:\34.txt",Êä³ö"c:\"
+// è·å–æ–‡ä»¶çš„è·¯å¾„å. è¾“å…¥"c:\34.txt",è¾“å‡º"c:\"
 std::string GetFillPath_ByFullPathName(const std::string& fullPathName)
 {
-	assert_check(fullPathName.size() > 0, "GetFillPath_ByFullPathName");
+    assert_check(fullPathName.size() > 0, "GetFillPath_ByFullPathName");
 
-	size_t pos = fullPathName.rfind('\\');
-	assert_check(pos != std::string::npos, "GetFillPath_ByFullPathName");
-	
-	std::string rst = fullPathName;
-	rst.resize(pos + 1);
-	return rst;
+    size_t pos = fullPathName.rfind('\\');
+    assert_check(pos != std::string::npos, "GetFillPath_ByFullPathName");
+
+    std::string rst = fullPathName;
+    rst.resize(pos + 1);
+    return rst;
 }
 
 std::string GetFileNameWithoutPath(const std::string& fullPathName)
 {
-	assert_check(fullPathName.size() > 0, "GetFileNameWithoutPath");
+    assert_check(fullPathName.size() > 0, "GetFileNameWithoutPath");
 
-	size_t pos = fullPathName.rfind('\\');
-	assert_check(pos != std::string::npos, "GetFileNameWithoutPath");
+    size_t pos = fullPathName.rfind('\\');
+    assert_check(pos != std::string::npos, "GetFileNameWithoutPath");
 
-	std::string rst = &fullPathName[pos + 1];
-	return rst;
+    std::string rst = &fullPathName[pos + 1];
+    return rst;
 }
 
-
 ///////////////////////////////////////////////////////////////////////
-// StrToDataµÄÊµÏÖ´úÂë
+// StrToDataçš„å®ç°ä»£ç 
 ///////////////////////////////////////////////////////////////////////
 //
-static long pow_i(int d,int n)
+static long pow_i(int d, int n)
 {
-	int i;
-	long m=1;
-	for(i=0;i<n;i++)
-		m*=d;
-	return m;
+    int i;
+    long m = 1;
+    for (i = 0; i < n; i++)
+        m *= d;
+    return m;
 }
 
-static bool isRightData(char c,int jz)
+static bool isRightData(char c, int jz)
 {
-	if((jz<2)||(jz>16))
-		return false;
-	char ch[]="00112233445566778899aAbBcCdDeEfF";
-	int i=0;
-	for(i=0;i<jz;i++)
-	{
-		if(c==ch[i*2])return true;
-		if(c==ch[i*2+1])return true;
-	}
-	return false;
+    if ((jz < 2) || (jz > 16))
+        return false;
+    char ch[] = "00112233445566778899aAbBcCdDeEfF";
+    int i = 0;
+    for (i = 0; i < jz; i++)
+    {
+        if (c == ch[i * 2])
+            return true;
+        if (c == ch[i * 2 + 1])
+            return true;
+    }
+    return false;
 }
 
 long StrToData(const ::std::string& strData, int jz)
 {
-	int l = (int)strData.length();
-	long IntValue=0;
-	int bitValue = 0;
-	int i;
-	for(i=0;i<l;i++)
-	{ 
-		if(isRightData(strData[i],jz))
-		{
-			bitValue = ToHexDigit(strData[i]);
-			IntValue=bitValue*pow_i(jz,l-i-1)+IntValue;
-		}
-		else
-			return -1;
-	}
-	return IntValue;
+    int l = (int)strData.length();
+    long IntValue = 0;
+    int bitValue = 0;
+    int i;
+    for (i = 0; i < l; i++)
+    {
+        if (isRightData(strData[i], jz))
+        {
+            bitValue = ToHexDigit(strData[i]);
+            IntValue = bitValue * pow_i(jz, l - i - 1) + IntValue;
+        }
+        else
+            return -1;
+    }
+    return IntValue;
 }
 
-int ToHexDigit( char c )
+int ToHexDigit(char c)
 {
-	assert(isRightData(c, 16));
+    assert(isRightData(c, 16));
 
-	int bitValue = 0;
-	if(isdigit(c))
-		bitValue=c-0x30;
-	else
-	{
-		switch(c)
-		{
-		case 'a':
-		case 'A':
-			bitValue=0x0a;
-			break;
+    int bitValue = 0;
+    if (isdigit(c))
+        bitValue = c - 0x30;
+    else
+    {
+        switch (c)
+        {
+            case 'a':
+            case 'A':
+                bitValue = 0x0a;
+                break;
 
-		case 'b':
-		case 'B':
-			bitValue=0x0b;
-			break;
+            case 'b':
+            case 'B':
+                bitValue = 0x0b;
+                break;
 
-		case 'c':
-		case 'C':
-			bitValue=0x0c;
-			break;
+            case 'c':
+            case 'C':
+                bitValue = 0x0c;
+                break;
 
-		case 'd':
-		case 'D':
-			bitValue=0x0d;
-			break;
+            case 'd':
+            case 'D':
+                bitValue = 0x0d;
+                break;
 
-		case 'e':
-		case 'E':
-			bitValue=0x0e;
-			break;
+            case 'e':
+            case 'E':
+                bitValue = 0x0e;
+                break;
 
-		case 'f':
-		case 'F':
-			bitValue=0x0f;
-			break;
-		}
-	}	
-	return bitValue;
+            case 'f':
+            case 'F':
+                bitValue = 0x0f;
+                break;
+        }
+    }
+    return bitValue;
 }
 
 ///////////////////////////////////////////////////////////////////////
-// ConvertToCStyleStrµÄÊµÏÖ´úÂë
+// ConvertToCStyleStrçš„å®ç°ä»£ç 
 ///////////////////////////////////////////////////////////////////////
 //
 
-#define __ENABLE_ASSERT_IN_STYLESTR_CVT__ // ²âÊÔÊ±ÓÃÀ´¹Ø±Õ "C·ç¸ñ×ª»»º¯Êı" ÀïÃæµÄassertµÄ ¡£ 
+#define __ENABLE_ASSERT_IN_STYLESTR_CVT__ // æµ‹è¯•æ—¶ç”¨æ¥å…³é—­ "Cé£æ ¼è½¬æ¢å‡½æ•°" é‡Œé¢çš„assertçš„ ã€‚
 
 //00 01 02 03 04 05 06 07  ........
 //08 09 0a 0b 0c 0d 0e 0f  ........
@@ -186,39 +186,29 @@ int ToHexDigit( char c )
 //68 69 6a 6b 6c 6d 6e 6f  hijklmno
 //70 71 72 73 74 75 76 77  pqrstuvw
 //78 79 7a 7b 7c 7d 7e 7f  xyz{|}~.
-::std::string ConvertToCStyleStr( const ::std::string& _Str )
+::std::string ConvertToCStyleStr(const ::std::string& _Str)
 {
-	static const char* shiftMap[] = {
-		"\\(00)", "\\(01)", "\\(02)", "\\(03)", "\\(04)", "\\(05)", "\\(06)", "\\(07)",
-		"\\(08)", "\\t"   , "\\n"   , "\\(0B)", "\\(0C)", "\\r"   , "\\(0E)", "\\(0F)",
-		"\\(10)", "\\(11)", "\\(12)", "\\(13)", "\\(14)", "\\(15)", "\\(16)", "\\(17)",
-		"\\(18)", "\\(19)", "\\(1A)", "\\(1B)", "\\(1C)", "\\(1D)", "\\(1E)", "\\(1F)",
-		" "     , "!"     , "\""    , "#"     , "$"     , "%"     , "&"     , "\'"    , 
-		"("     , ")"     , "*"     , "+"     , ","     , "-"     , "."     , "/"     , 
-		"0"     , "1"     , "2"     , "3"     , "4"     , "5"     , "6"     , "7"     , 
-		"8"     , "9"     , ":"     , ";"     , "<"     , "="     , ">"     , "?"     , 
-		"@"     , "A"     , "B"     , "C"     , "D"     , "E"     , "F"     , "G"     , 
-		"H"     , "I"     , "J"     , "K"     , "L"     , "M"     , "N"     , "O"     , 
-		"P"     , "Q"     , "R"     , "S"     , "T"     , "U"     , "V"     , "W"     , 
-		"X"     , "Y"     , "Z"     , "["     , "\\\\"  , "]"     , "^"     , "_"     , 
-		"`"     , "a"     , "b"     , "c"     , "d"     , "e"     , "f"     , "g"     , 
-		"h"     , "i"     , "j"     , "k"     , "l"     , "m"     , "n"     , "o"     , 
-		"p"     , "q"     , "r"     , "s"     , "t"     , "u"     , "v"     , "w"     , 
-		"x"     , "y"     , "z"     , "{"     , "|"     , "}"     , "~"     , "\\(7F)"
-	};
+    static const char* shiftMap[] = {"\\(00)", "\\(01)", "\\(02)", "\\(03)", "\\(04)", "\\(05)", "\\(06)", "\\(07)",
+        "\\(08)", "\\t", "\\n", "\\(0B)", "\\(0C)", "\\r", "\\(0E)", "\\(0F)", "\\(10)", "\\(11)", "\\(12)", "\\(13)",
+        "\\(14)", "\\(15)", "\\(16)", "\\(17)", "\\(18)", "\\(19)", "\\(1A)", "\\(1B)", "\\(1C)", "\\(1D)", "\\(1E)",
+        "\\(1F)", " ", "!", "\"", "#", "$", "%", "&", "\'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3",
+        "4", "5", "6", "7", "8", "9", ":", ";", "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I",
+        "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "\\\\", "]", "^", "_",
+        "`", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",
+        "v", "w", "x", "y", "z", "{", "|", "}", "~", "\\(7F)"};
 
-	::std::string rstString;
-	rstString.reserve(_Str.size() * 2); // Ô¤·ÖÅä¶àÒ»µã¿Õ¼ä£¬·ÀÖ¹stringÄÚ²¿Æµ·±ÖØĞÂ·ÖÅäÄÚ´æ
+    ::std::string rstString;
+    rstString.reserve(_Str.size() * 2); // é¢„åˆ†é…å¤šä¸€ç‚¹ç©ºé—´ï¼Œé˜²æ­¢stringå†…éƒ¨é¢‘ç¹é‡æ–°åˆ†é…å†…å­˜
 
-	for (size_t i = 0; i < _Str.size(); i++)
-	{
-		bool isAscIIChar =  _Str[i] >= 0 && _Str[i] <= 0x7f;
-		if (isAscIIChar)
-			rstString.append(shiftMap[size_t(_Str[i])]); // Ó¢ÎÄ×Ö·û
-		else
-			rstString.append(1, _Str[i]); // ÖĞÎÄ×Ö·û
-	}
-	return rstString;
+    for (size_t i = 0; i < _Str.size(); i++)
+    {
+        bool isAscIIChar = _Str[i] >= 0 && _Str[i] <= 0x7f;
+        if (isAscIIChar)
+            rstString.append(shiftMap[size_t(_Str[i])]); // è‹±æ–‡å­—ç¬¦
+        else
+            rstString.append(1, _Str[i]); // ä¸­æ–‡å­—ç¬¦
+    }
+    return rstString;
 }
 
 std::string hexdump_oneline(const std::string& prefix, const std::string& line, size_t width)
@@ -228,7 +218,7 @@ std::string hexdump_oneline(const std::string& prefix, const std::string& line, 
 
     // hex
     //
-    for (size_t i=0;i< line.size(); i++)
+    for (size_t i = 0; i < line.size(); i++)
     {
         char hex_text[16] = "";
         snprintf(hex_text, sizeof(hex_text), "%02X ", (unsigned char)(line[i]));
@@ -239,7 +229,7 @@ std::string hexdump_oneline(const std::string& prefix, const std::string& line, 
 
     // the space between hex and text
     //
-    for (unsigned long spacer = line.size(); spacer < width ; spacer++)
+    for (unsigned long spacer = line.size(); spacer < width; spacer++)
         ostrm << "   ";
     if (line.size() <= 8)
         ostrm << "   ";
@@ -248,7 +238,6 @@ std::string hexdump_oneline(const std::string& prefix, const std::string& line, 
     else if (line.size() <= 24)
         ostrm << " ";
     ostrm << ": ";
-
 
     // text
     //
@@ -281,209 +270,206 @@ std::string hexdump_oneline(const std::string& prefix, const std::string& line, 
 }
 
 ///////////////////////////////////////////////////////////////////////
-// ConvertFromCStyleStrµÄÊµÏÖ´úÂë
+// ConvertFromCStyleStrçš„å®ç°ä»£ç 
 ///////////////////////////////////////////////////////////////////////
 //
 
 static bool IsHexNumber(const char& c)
 {
-	const static char hexNumber[] = "0123456789abcdefABCDEF";
-	return (strchr(hexNumber, c) != NULL);
+    const static char hexNumber[] = "0123456789abcdefABCDEF";
+    return (strchr(hexNumber, c) != NULL);
 }
 
-// pSrc´«½øÀ´µÄÊÇ "\(3F)" ¸ñÊ½µÄ×Ö·û´®
+// pSrcä¼ è¿›æ¥çš„æ˜¯ "\(3F)" æ ¼å¼çš„å­—ç¬¦ä¸²
 static int ProcShiftCharByNum(char& dst, const char* const pSrc, int srcStrLen)
 {
-	assert(pSrc != NULL);
+    assert(pSrc != NULL);
 
-	// ¼ì²éÊÇ·ñ±ê×¼¸ñÊ½ : "\(3F)"
-	//
-	bool isAllowdFormat = false;
-	if (srcStrLen < 5)
-		isAllowdFormat = false;
-	else if (pSrc[0] != '\\' || pSrc[1] != '(' || pSrc[4] != ')')
-		isAllowdFormat = false;
-	else if ( (!IsHexNumber(pSrc[2])) || (!IsHexNumber(pSrc[3])) )
-		isAllowdFormat = false;
-	else
-		isAllowdFormat = true;
+    // æ£€æŸ¥æ˜¯å¦æ ‡å‡†æ ¼å¼ : "\(3F)"
+    //
+    bool isAllowdFormat = false;
+    if (srcStrLen < 5)
+        isAllowdFormat = false;
+    else if (pSrc[0] != '\\' || pSrc[1] != '(' || pSrc[4] != ')')
+        isAllowdFormat = false;
+    else if ((!IsHexNumber(pSrc[2])) || (!IsHexNumber(pSrc[3])))
+        isAllowdFormat = false;
+    else
+        isAllowdFormat = true;
 
-
-	// ´¦Àí·Ç·¨Çé¿ö
-	//
-	if (isAllowdFormat == false)
-	{
+    // å¤„ç†éæ³•æƒ…å†µ
+    //
+    if (isAllowdFormat == false)
+    {
 #ifdef __ENABLE_ASSERT_IN_STYLESTR_CVT__
-		assert(false); // ·Ç·¨µÄ¸ñÊ½. ¹ÊÒâÈÃÆäÖ»ÊÇdebug°æ±¾²Åassert
+        assert(false); // éæ³•çš„æ ¼å¼. æ•…æ„è®©å…¶åªæ˜¯debugç‰ˆæœ¬æ‰assert
 #endif
 
-		dst = pSrc[0]; // ¶ÔÓÚ²»¿ÉÊ¶±ğµÄ×ªÒå£¬½«'\'·ûºÅ°´ÕÕ·Ç×ªÒåÖ¸Ê¾·ûÀ´½âÎö£¬²¢ÈÃÓÎ±êÖ¸Ïò'\'·ûºÅºóÒ»¸ö×Ö·û
-		return 1;
-	}
+        dst = pSrc[0]; // å¯¹äºä¸å¯è¯†åˆ«çš„è½¬ä¹‰ï¼Œå°†'\'ç¬¦å·æŒ‰ç…§éè½¬ä¹‰æŒ‡ç¤ºç¬¦æ¥è§£æï¼Œå¹¶è®©æ¸¸æ ‡æŒ‡å‘'\'ç¬¦å·åä¸€ä¸ªå­—ç¬¦
+        return 1;
+    }
 
-	// ´¦ÀíÕıÈ·Çé¿ö
-	//
-	::std::string hexNumString(&pSrc[2], 2);
-	int hexNum = StrToData(hexNumString, 16);
-	dst = (static_cast<unsigned char>(hexNum));
-	return 5; // ±ê×¼¸ñÊ½:"\(3F)" ¸ÕºÃÊÇÕ¼ÓÃ5¸ö×Ö½Ú
+    // å¤„ç†æ­£ç¡®æƒ…å†µ
+    //
+    ::std::string hexNumString(&pSrc[2], 2);
+    int hexNum = StrToData(hexNumString, 16);
+    dst = (static_cast<unsigned char>(hexNum));
+    return 5; // æ ‡å‡†æ ¼å¼:"\(3F)" åˆšå¥½æ˜¯å ç”¨5ä¸ªå­—èŠ‚
 }
 
-// pSrc´«½øÀ´µÄÊÇ "\r" "\n" "\t" "\\" ¸ñÊ½µÄ×Ö·û´®
+// pSrcä¼ è¿›æ¥çš„æ˜¯ "\r" "\n" "\t" "\\" æ ¼å¼çš„å­—ç¬¦ä¸²
 static int ProcShiftCharByChar(char& dst, const char* const pSrc, int srcStrLen)
 {
-	// ¼ì²é¸ñÊ½
-	if (srcStrLen < 2)
-		goto ERR_END;
+    // æ£€æŸ¥æ ¼å¼
+    if (srcStrLen < 2)
+        goto ERR_END;
 
-	switch (pSrc[1])
-	{
-	case 'r' : 
-		dst = '\r'; 
-		return 2;
+    switch (pSrc[1])
+    {
+        case 'r':
+            dst = '\r';
+            return 2;
 
-	case 'n' : 
-		dst = '\n'; 
-		return 2;
+        case 'n':
+            dst = '\n';
+            return 2;
 
-	case 't' : 
-		dst = '	'; 
-		return 2;
+        case 't':
+            dst = '	';
+            return 2;
 
-	case '\\': 
-		dst = '\\'; 
-		return 2;
+        case '\\':
+            dst = '\\';
+            return 2;
 
-	default:
-		goto ERR_END;
-	}
+        default:
+            goto ERR_END;
+    }
 
-ERR_END:
-	{
+ERR_END : {
 #ifdef __ENABLE_ASSERT_IN_STYLESTR_CVT__
-		assert(false); // ·Ç·¨µÄ¸ñÊ½. ¹ÊÒâÈÃÆäÖ»ÊÇdebug°æ±¾²Åassert
+    assert(false); // éæ³•çš„æ ¼å¼. æ•…æ„è®©å…¶åªæ˜¯debugç‰ˆæœ¬æ‰assert
 #endif
 
-		dst = pSrc[0]; // ¶ÔÓÚ²»¿ÉÊ¶±ğµÄ×ªÒå£¬½«'\'·ûºÅ°´ÕÕ·Ç×ªÒåÖ¸Ê¾·ûÀ´½âÎö£¬²¢ÈÃÓÎ±êÖ¸Ïò'\'·ûºÅºóÒ»¸ö×Ö·û
-		return 1;
-	}
+    dst = pSrc[0]; // å¯¹äºä¸å¯è¯†åˆ«çš„è½¬ä¹‰ï¼Œå°†'\'ç¬¦å·æŒ‰ç…§éè½¬ä¹‰æŒ‡ç¤ºç¬¦æ¥è§£æï¼Œå¹¶è®©æ¸¸æ ‡æŒ‡å‘'\'ç¬¦å·åä¸€ä¸ªå­—ç¬¦
+    return 1;
+}
 }
 
-// ·µ»ØÓÎ±êÓ¦¸ÃÒÆ¶¯¼¸¸öÎ»ÖÃ.
+// è¿”å›æ¸¸æ ‡åº”è¯¥ç§»åŠ¨å‡ ä¸ªä½ç½®.
 static int ProcShiftChar(char& dst, const char* pSrc, int srcStrLen)
 {
-	switch (pSrc[1])
-	{
-	case 'r': 
-	case 'n': 
-	case 't': 
-	case '\\': 
-		return ProcShiftCharByChar(dst, pSrc, srcStrLen);
+    switch (pSrc[1])
+    {
+        case 'r':
+        case 'n':
+        case 't':
+        case '\\':
+            return ProcShiftCharByChar(dst, pSrc, srcStrLen);
 
+        case '(':
+            return ProcShiftCharByNum(dst, pSrc, srcStrLen);
 
-	case '(': 
-		return ProcShiftCharByNum(dst, pSrc, srcStrLen);
-
-	default:
+        default:
 
 #ifdef __ENABLE_ASSERT_IN_STYLESTR_CVT__
-		assert(false); // ·Ç·¨µÄ¸ñÊ½. ¹ÊÒâÈÃÆäÖ»ÊÇdebug°æ±¾²Åassert
+            assert(false); // éæ³•çš„æ ¼å¼. æ•…æ„è®©å…¶åªæ˜¯debugç‰ˆæœ¬æ‰assert
 #endif
 
-		// ´¦Àí²»¿ÉÊ¶±ğµÄ×ªÒå
-		dst = pSrc[0];// ¶ÔÓÚ \s ÕâÑù²»¿ÉÊ¶±ğµÄ×ªÒå£¬½«'\'·ûºÅ°´ÕÕ·Ç×ªÒåÖ¸Ê¾·ûÀ´½âÎö£¬²¢ÈÃÓÎ±êÖ¸Ïò's'¡£ ¼´£º½á¹û´®½«ÏÔÊ¾µÄÊÇ"\s"
-		return 1;
-	}
+            // å¤„ç†ä¸å¯è¯†åˆ«çš„è½¬ä¹‰
+            dst = pSrc
+                [0]; // å¯¹äº \s è¿™æ ·ä¸å¯è¯†åˆ«çš„è½¬ä¹‰ï¼Œå°†'\'ç¬¦å·æŒ‰ç…§éè½¬ä¹‰æŒ‡ç¤ºç¬¦æ¥è§£æï¼Œå¹¶è®©æ¸¸æ ‡æŒ‡å‘'s'ã€‚ å³ï¼šç»“æœä¸²å°†æ˜¾ç¤ºçš„æ˜¯"\s"
+            return 1;
+    }
 }
 
-
-::std::string ConvertFromCStyleStr( const ::std::string& _CStyleStr )
+::std::string ConvertFromCStyleStr(const ::std::string& _CStyleStr)
 {
-	::std::string rstString;
-	rstString.reserve(_CStyleStr.size()); // Ô¤·ÖÅä¿Õ¼ä£¬·ÀÖ¹stringÄÚ²¿Æµ·±ÖØĞÂ·ÖÅäÄÚ´æ
+    ::std::string rstString;
+    rstString.reserve(_CStyleStr.size()); // é¢„åˆ†é…ç©ºé—´ï¼Œé˜²æ­¢stringå†…éƒ¨é¢‘ç¹é‡æ–°åˆ†é…å†…å­˜
 
-	size_t cStyleStrIndex = 0;
-	while (cStyleStrIndex < _CStyleStr.size())
-	{
-		if (_CStyleStr[cStyleStrIndex] != '\\')
-		{
-			rstString.append(1, _CStyleStr[cStyleStrIndex]);
-			cStyleStrIndex++;
-		}
-		else
-		{
-			char shiftChar = 0;
-			int cStyleStrLeftLen = _CStyleStr.size() - cStyleStrIndex;
-			cStyleStrIndex += ProcShiftChar(shiftChar, &_CStyleStr[cStyleStrIndex], cStyleStrLeftLen);
-			rstString.append(1, shiftChar);
-		}
-	}
+    size_t cStyleStrIndex = 0;
+    while (cStyleStrIndex < _CStyleStr.size())
+    {
+        if (_CStyleStr[cStyleStrIndex] != '\\')
+        {
+            rstString.append(1, _CStyleStr[cStyleStrIndex]);
+            cStyleStrIndex++;
+        }
+        else
+        {
+            char shiftChar = 0;
+            int cStyleStrLeftLen = _CStyleStr.size() - cStyleStrIndex;
+            cStyleStrIndex += ProcShiftChar(shiftChar, &_CStyleStr[cStyleStrIndex], cStyleStrLeftLen);
+            rstString.append(1, shiftChar);
+        }
+    }
 
-	return rstString;
+    return rstString;
 }
 
 int CompairNoCase(const ::std::string& lhs, const ::std::string& rhs)
 {
-	size_t minSize = std::min(lhs.size(), rhs.size());
+    size_t minSize = std::min(lhs.size(), rhs.size());
 
-	int v = 0;
-	for(size_t i = 0; i < minSize; ++i)
-	{
-		v = tolower(lhs[i]) - tolower(rhs[i]);
+    int v = 0;
+    for (size_t i = 0; i < minSize; ++i)
+    {
+        v = tolower(lhs[i]) - tolower(rhs[i]);
 
-		if(v != 0)
-			return v;
-	}
+        if (v != 0)
+            return v;
+    }
 
-	v = lhs.size() - rhs.size();
-	return v;
+    v = lhs.size() - rhs.size();
+    return v;
 }
 
-::std::string  ToLower(const ::std::string& str)
+::std::string ToLower(const ::std::string& str)
 {
-	::std::string ret;
-	for(size_t i = 0; i < str.size(); ++i)
-	{
-		ret += tolower(str[i]);
-	}
+    ::std::string ret;
+    for (size_t i = 0; i < str.size(); ++i)
+    {
+        ret += tolower(str[i]);
+    }
 
-	return ret;
+    return ret;
 }
 
 std::wstring& CutSpace(std::wstring& ret)
 {
-	while(ret.length() > 0 && ret[0] == 0X20)
-		ret = ret.substr(1, ret.length() - 1);
+    while (ret.length() > 0 && ret[0] == 0X20)
+        ret = ret.substr(1, ret.length() - 1);
 
-	while(ret.length() > 0 && ret[ret.length() - 1] == 0X20)
-		ret = ret.substr(0, ret.length() - 1);
+    while (ret.length() > 0 && ret[ret.length() - 1] == 0X20)
+        ret = ret.substr(0, ret.length() - 1);
 
-	return ret;
+    return ret;
 }
 
 std::string& CutSpace(std::string& ret)
 {
-	while ( ret.length() > 0 && (ret[0] == 0X20 || ret[0] == '\t') )
-		ret = ret.substr(1, ret.length() - 1);
+    while (ret.length() > 0 && (ret[0] == 0X20 || ret[0] == '\t'))
+        ret = ret.substr(1, ret.length() - 1);
 
-	while ( ret.length() > 0 && (ret[ret.length() - 1] == 0X20 || ret[ret.length() - 1] == '\t') )
-		ret = ret.substr(0, ret.length() - 1);
+    while (ret.length() > 0 && (ret[ret.length() - 1] == 0X20 || ret[ret.length() - 1] == '\t'))
+        ret = ret.substr(0, ret.length() - 1);
 
-	return ret;
+    return ret;
 }
 
-std::string CutAllSpace( const std::string& srcStr )
+std::string CutAllSpace(const std::string& srcStr)
 {
-	std::string noSpaceStr = "";
-	for( size_t i = 0; i < srcStr.size(); ++i )
-	{
-		if( srcStr[i] == ' ' )
-			continue;
+    std::string noSpaceStr = "";
+    for (size_t i = 0; i < srcStr.size(); ++i)
+    {
+        if (srcStr[i] == ' ')
+            continue;
 
-		noSpaceStr.push_back(srcStr[i]);
-	}
+        noSpaceStr.push_back(srcStr[i]);
+    }
 
-	return noSpaceStr;
+    return noSpaceStr;
 }
 
 END_ES_NAMESPACE

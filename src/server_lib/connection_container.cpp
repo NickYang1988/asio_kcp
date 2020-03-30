@@ -1,13 +1,12 @@
-#include "connection_container.hpp"
 #include <algorithm>
-#include <boost/bind.hpp>
-
-#include "essential/utility/strutil.h"
-#include "kcp/ikcp.h"
 #include <cstdlib>
 #include <iostream>
 #include <unistd.h>
 #include <sys/time.h>
+
+#include "connection_container.hpp"
+#include "essential/utility/strutil.h"
+#include "kcp/ikcp.h"
 
 namespace kcp_svr {
 
@@ -44,7 +43,7 @@ void connection_container::update_all_kcp(uint32_t clock)
 
 void connection_container::stop_all()
 {
-    // todo need more code if connection bind some asio callback.
+    // TODO: need more code if connection bind some asio callback.
 
     connections_.clear();
 }

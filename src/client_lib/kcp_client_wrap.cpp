@@ -2,19 +2,19 @@
 
 #include "kcp_client_wrap.hpp"
 #include "kcp_client_util.h"
-#include "../essential/check_function.h"
+#include "essential/check_function.h"
 
 namespace asio_kcp {
 
-kcp_client_wrap::kcp_client_wrap(void) :
-    connect_result_(1),
-    pevent_func_(NULL),
-    event_func_var_(NULL),
-    workthread_(0),
-    workthread_want_stop_(false),
-    workthread_stopped_(false),
-    workthread_start_(false),
-    kcp_last_update_clock_(0)
+kcp_client_wrap::kcp_client_wrap(void)
+    : connect_result_(1)
+    , pevent_func_(NULL)
+    , event_func_var_(NULL)
+    , workthread_(0)
+    , workthread_want_stop_(false)
+    , workthread_stopped_(false)
+    , workthread_start_(false)
+    , kcp_last_update_clock_(0)
 {
     kcp_client_.set_event_callback(client_event_callback_func, (void*)this);
 }
@@ -24,13 +24,14 @@ kcp_client_wrap::~kcp_client_wrap(void)
     stop();
 }
 
-void kcp_client_wrap::set_event_callback(const client_event_callback_t& event_callback_func, void* var)
+void kcp_client_wrap::set_event_callback(client_event_callback_t& event_callback_func, void* var)
 {
     pevent_func_ = &event_callback_func;
     event_func_var_ = var;
 }
 
-void kcp_client_wrap::client_event_callback_func(kcp_conv_t conv, eEventType event_type, const std::string& msg, void* var)
+void kcp_client_wrap::client_event_callback_func(
+    kcp_conv_t conv, eEventType event_type, const std::string& msg, void* var)
 {
     ((kcp_client_wrap*)var)->handle_client_event_callback(conv, event_type, msg);
 }
@@ -56,8 +57,7 @@ void kcp_client_wrap::handle_client_event_callback(kcp_conv_t conv, eEventType e
             if (pevent_func_)
                 (*pevent_func_)(conv, event_type, msg, event_func_var_);
             break;
-        default:
-            ; // do nothing
+        default:; // do nothing
     }
 }
 
@@ -146,7 +146,6 @@ void kcp_client_wrap::do_workthread_loop(void)
         }
     }
 
-
     workthread_start_ = false;
     workthread_stopped_ = true;
     std::cout << "workthread_loop thread end!" << std::endl;
@@ -161,7 +160,7 @@ void kcp_client_wrap::stop()
         workthread_want_stop_ = true;
         while (workthread_stopped_ == false)
             millisecond_sleep(1);
-        void *status;
+        void* status;
         pthread_join(workthread_, &status);
     }
     kcp_client_.stop();
@@ -172,7 +171,4 @@ void kcp_client_wrap::send_msg(const std::string& msg)
     kcp_client_.send_msg(msg);
 }
 
-
-
-
-} // end of asio_kcp
+} // namespace asio_kcp

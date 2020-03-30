@@ -1,17 +1,18 @@
 #include <algorithm>
-#include <boost/bind.hpp>
-
 #include <cstdlib>
 #include <iostream>
 #include <unistd.h>
 #include <sys/time.h>
+#include <boost/bind.hpp>
 
-#include "connection_manager.hpp"
+#include "kcp/ikcp.h"
+
 #include "essential/utility/strutil.h"
 #include "essential/check_function.h"
-#include "kcp/ikcp.h"
 #include "util/connect_packet.hpp"
 #include "asio_kcp_log.hpp"
+
+#include "connection_manager.hpp"
 
 /* get system time */
 static inline void itimeofday(long* sec, long* usec)
@@ -54,7 +55,8 @@ connection_manager::connection_manager(boost::asio::io_service& io_service, cons
     , kcp_timer_(io_service)
     , cur_clock_(0)
 {
-    //udp_socket_.set_option(udp::socket::non_blocking_io(false)); // why this make compile fail
+    //udp_socket_.set_option(udp::socket::non_blocking_io(false)); // TODO: why this make compile fail
+    udp_socket_.non_blocking(false);
 
     hook_udp_async_receive();
     hook_kcp_timer();
@@ -101,16 +103,7 @@ void connection_manager::handle_connect_packet()
 
 void connection_manager::handle_kcp_packet(size_t bytes_recvd)
 {
-    // IUINT32 conv;
-    // int ret = ikcp_get_conv(udp_data_, bytes_recvd, &conv);
-    // if (ret == 0)
-    // {
-    //     assert_check(false, "ikcp_get_conv return 0");
-    //     return;
-    // }
-
-    // TODO: need TEST
-    // new interface name
+    // TODO: need TEST new interface name
     IUINT32 conv = ikcp_getconv(udp_data_);
     connection::shared_ptr conn_ptr = connections_.find_by_conv(conv);
     if (!conn_ptr)
@@ -180,7 +173,6 @@ void connection_manager::hook_kcp_timer(void)
 
 void connection_manager::handle_kcp_time(void)
 {
-    //std::cout << "."; std::cout.flush();
     hook_kcp_timer();
     cur_clock_ = iclock();
     connections_.update_all_kcp(cur_clock_);

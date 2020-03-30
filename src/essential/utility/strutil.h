@@ -1,55 +1,55 @@
 #pragma once
 #include "../es_config.h"
+
 #include <string>
 #include <vector>
 
 BEGIN_ES_NAMESPACE
 
-	std::wstring& CutSpace(std::wstring& ret);
-	std::string& CutSpace(std::string& ret);
+std::wstring& CutSpace(std::wstring& ret);
+std::string& CutSpace(std::string& ret);
 
-	std::string CutAllSpace( const std::string& srcStr );
-	// »ñÈ¡ÎÄ¼şµÄºó×ºÃû
-	std::string GetFileSuffix( const std::string& fileName );
+std::string CutAllSpace(const std::string& srcStr);
+// è·å–æ–‡ä»¶çš„åç¼€å
+std::string GetFileSuffix(const std::string& fileName);
 
-	// »ñÈ¡ÎÄ¼şÎŞºó×ºÃûµÄ²¿·Ö 
-	//    ÊäÈë fsdf.txt  Êä³ö fsdf
-	std::string GetFileWithoutSuffix(const std::string& fileName);
+// è·å–æ–‡ä»¶æ— åç¼€åçš„éƒ¨åˆ†
+//    è¾“å…¥ fsdf.txt  è¾“å‡º fsdf
+std::string GetFileWithoutSuffix(const std::string& fileName);
 
-	// »ñÈ¡ÎÄ¼şµÄÂ·¾¶Ãû.
-	std::string GetFillPath_ByFullPathName(const std::string& fullPathName);
+// è·å–æ–‡ä»¶çš„è·¯å¾„å.
+std::string GetFillPath_ByFullPathName(const std::string& fullPathName);
 
-	// »ñÈ¡ ÎŞÂ·¾¶ĞÅÏ¢µÄÎÄ¼şÃû
-	std::string GetFileNameWithoutPath(const std::string& fullPathName);
+// è·å– æ— è·¯å¾„ä¿¡æ¯çš„æ–‡ä»¶å
+std::string GetFileNameWithoutPath(const std::string& fullPathName);
 
-	//º¯ÊıËµÃ÷
-	//¹¦ÄÜ£º×Ö·û´®×ªÎªÕûÊıÖµ[×Ö·û´®¿ÉÎª2-16]ÈÎÒâ½øÖÆÊıÖµ×Ö·û´®
-	//·µ»Ø£º³¤ÕûĞÍÊıÖµ
-	//²ÎÊı£ºstrData Îª½«Òª×ª»»µÄ×Ö·û´®
-	//²ÎÊı£ºjz Îª×Ö·û´®µÄ½øÖÆ
-	long StrToData(const ::std::string& strData, int jz);
+//å‡½æ•°è¯´æ˜
+//åŠŸèƒ½ï¼šå­—ç¬¦ä¸²è½¬ä¸ºæ•´æ•°å€¼[å­—ç¬¦ä¸²å¯ä¸º2-16]ä»»æ„è¿›åˆ¶æ•°å€¼å­—ç¬¦ä¸²
+//è¿”å›ï¼šé•¿æ•´å‹æ•°å€¼
+//å‚æ•°ï¼šstrData ä¸ºå°†è¦è½¬æ¢çš„å­—ç¬¦ä¸²
+//å‚æ•°ï¼šjz ä¸ºå­—ç¬¦ä¸²çš„è¿›åˆ¶
+long StrToData(const ::std::string& strData, int jz);
 
+// åŠŸèƒ½ï¼š "ä»»æ„å­—ç¬¦ä¸²" ä¸ "cé£æ ¼çš„åªå«æœ‰å¯è¯»å­—ç¬¦çš„å­—ç¬¦ä¸²(CStyleStr)" ç›¸äº’è½¬æ¢.
+//
+// "ä»»æ„å­—ç¬¦ä¸²"	: å­—ç¬¦ä¸²ä¸­é—´å¯ä»¥æœ‰ä»»æ„å­—ç¬¦ï¼Œç”šè‡³NULL.
+//
+// CStyleStr	: å­—ç¬¦ä¸²ä¸­é—´æ²¡æœ‰NULL,æ²¡æœ‰å›è½¦æ¢è¡Œï¼› ä¸å¯è§å­—ç¬¦è¿›è¡Œäº†è½¬ä¹‰.
+// ....... æ¯”å¦‚ ï¼š123\(00)\r\n6786\t\(0d)\(0a)
+//
+// éœ€è¦è½¬ä¹‰çš„å­—ç¬¦èŒƒå›´ï¼š0 <= c < 0x20 æˆ– c == 0x7F .
+// ....... å…¶ä¸­: 0x0d->\r, 0x0a->\n, , 0x09->\t; å…¶ä½™ä»¥"\(åå…­è¿›åˆ¶æ•°å­—)"çš„æ–¹å¼è½¬ä¹‰è¡¨ç¤º
+// ....... "\"ç¬¦å·ä½œä¸ºè½¬ä¹‰æŒ‡ç¤ºç¬¦å·, å…¶æœ¬èº«éœ€è¦è½¬ä¹‰,ä»¥"\\"æ–¹å¼è¡¨ç¤º
+//
+::std::string ConvertToCStyleStr(const ::std::string& _Str); // æµ‹è¯•åœ¨BinaryStreamTesterä¸‹ bufTester
+::std::string ConvertFromCStyleStr(const ::std::string& _CStyleStr);
 
-	// ¹¦ÄÜ£º "ÈÎÒâ×Ö·û´®" Óë "c·ç¸ñµÄÖ»º¬ÓĞ¿É¶Á×Ö·ûµÄ×Ö·û´®(CStyleStr)" Ïà»¥×ª»». 
-	//
-	// "ÈÎÒâ×Ö·û´®"	: ×Ö·û´®ÖĞ¼ä¿ÉÒÔÓĞÈÎÒâ×Ö·û£¬ÉõÖÁNULL.
-	//
-	// CStyleStr	: ×Ö·û´®ÖĞ¼äÃ»ÓĞNULL,Ã»ÓĞ»Ø³µ»»ĞĞ£» ²»¿É¼û×Ö·û½øĞĞÁË×ªÒå. 
-	// ....... ±ÈÈç £º123\(00)\r\n6786\t\(0d)\(0a)
-	// 
-	// ĞèÒª×ªÒåµÄ×Ö·û·¶Î§£º0 <= c < 0x20 »ò c == 0x7F . 
-	// ....... ÆäÖĞ: 0x0d->\r, 0x0a->\n, , 0x09->\t; ÆäÓàÒÔ"\(Ê®Áù½øÖÆÊı×Ö)"µÄ·½Ê½×ªÒå±íÊ¾
-	// ....... "\"·ûºÅ×÷Îª×ªÒåÖ¸Ê¾·ûºÅ, Æä±¾ÉíĞèÒª×ªÒå,ÒÔ"\\"·½Ê½±íÊ¾
-	//
-	::std::string ConvertToCStyleStr(const ::std::string& _Str); // ²âÊÔÔÚBinaryStreamTesterÏÂ bufTester
-	::std::string ConvertFromCStyleStr(const ::std::string& _CStyleStr);
+::std::string ToHexDumpText(const std::string& _Str, size_t width, const std::string& prefix = "!- ");
 
-    ::std::string ToHexDumpText(const std::string& _Str, size_t width, const std::string& prefix = "!- ");
+// å°†å­—ç¬¦ '0'-'9'  'a'-'f'  'A'-'F' è½¬ä¸ºæ‰€å¯¹åº”çš„æ•°å­—.  A->10  B->11 f->15
+int ToHexDigit(char c);
 
-	// ½«×Ö·û '0'-'9'  'a'-'f'  'A'-'F' ×ªÎªËù¶ÔÓ¦µÄÊı×Ö.  A->10  B->11 f->15
-	int ToHexDigit( char c );
-
-	int CompairNoCase(const ::std::string& lhs, const ::std::string& rhs);
-	::std::string  ToLower(const ::std::string& str);
+int CompairNoCase(const ::std::string& lhs, const ::std::string& rhs);
+::std::string ToLower(const ::std::string& str);
 
 END_ES_NAMESPACE

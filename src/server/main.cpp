@@ -3,9 +3,6 @@
 #include <string>
 #include <stdlib.h>
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
-// #include "g2logworker.h"
-// #include "g2log.h"
 #include "server_lib/asio_kcp_log.hpp"
 #include "server.hpp"
 

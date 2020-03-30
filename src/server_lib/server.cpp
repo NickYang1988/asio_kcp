@@ -1,4 +1,3 @@
-#include <boost/bind.hpp>
 #include <signal.h>
 #include <cstdlib>
 

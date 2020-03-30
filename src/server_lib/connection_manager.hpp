@@ -8,15 +8,11 @@
 
 #include "connection_container.hpp"
 
-
-
 namespace kcp_svr {
 
-class connection_manager
-  : private boost::noncopyable, public std::enable_shared_from_this<connection_manager>
+class connection_manager : private boost::noncopyable, public std::enable_shared_from_this<connection_manager>
 {
 public:
-
     typedef std::shared_ptr<connection_manager> shared_ptr;
 
     connection_manager(boost::asio::io_service& io_service, const std::string& address, int udp_port);
@@ -30,19 +26,18 @@ public:
 
     int send_msg(const kcp_conv_t& conv, std::shared_ptr<std::string> msg);
 
-
-
-
     // this func should be multithread safe if running UdpPacketHandler in work thread pool.  can implement by io_service.dispatch
     void call_event_callback_func(kcp_conv_t conv, eEventType event_type, std::shared_ptr<std::string> msg);
 
     // this func should be multithread safe if running UdpPacketHandler in work thread pool.  can implement by io_service.dispatch
     void send_udp_packet(const std::string& msg, const udp::endpoint& endpoint);
 
+    uint32_t get_cur_clock(void) const
+    {
+        return cur_clock_;
+    }
 
-    uint32_t get_cur_clock(void) const {return cur_clock_;}
 private:
-
     /// The UDP
     void handle_udp_receive_from(const boost::system::error_code& error, size_t bytes_recvd);
     void hook_udp_async_receive(void);
@@ -63,12 +58,15 @@ private:
     udp::endpoint udp_remote_endpoint_;
 
     //enum { udp_packet_max_length = 548 }; // maybe 1472 will be ok.
-    enum { udp_packet_max_length = 1080 }; // (576-8-20 - 8) * 2
+    enum
+    {
+        udp_packet_max_length = 1080
+    }; // (576-8-20 - 8) * 2
     char udp_data_[1024 * 32];
 
     boost::asio::deadline_timer kcp_timer_;
     uint32_t cur_clock_;
-    u_int32_t timeout_time_; // after x millisecond
+    //uint32_t timeout_time_; // after x millisecond
 
     connection_container connections_;
 };

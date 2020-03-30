@@ -17,6 +17,8 @@
 #define AK_UDP_PACKET_LOG AK_INFO_LOG
 #define AK_ASK_PACKET_LOG AK_INFO_LOG
 
+#define AK_ENABLE_UDP_PACKET_LOG 1
+
 /*
 //#include <muduo/base/Logging.h>
 //#include <muduo/base/LogFile.h>

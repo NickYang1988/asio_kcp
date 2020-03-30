@@ -1,7 +1,6 @@
 #ifndef _ASIO_KCP_CLIENT_WRAP__
 #define _ASIO_KCP_CLIENT_WRAP__
 
-
 #include "kcp_client.hpp"
 
 namespace asio_kcp {
@@ -60,15 +59,13 @@ public:
     kcp_client_wrap(void);
     ~kcp_client_wrap(void);
 
-    void set_event_callback(const client_event_callback_t& event_callback_func, void* var);
+    void set_event_callback(client_event_callback_t& event_callback_func, void* var);
 
     // Sync connect. This function will block until connect succeed or failed.
     // we use system giving local port from system if udp_port_bind == 0
     // return 0 if connect succeed.
     // return < 0 (KCP_ERR_XXX) when some error happen.
     int connect(int udp_port_bind, const std::string& server_ip, const int server_port);
-
-
 
     // Async connect
     //
@@ -79,11 +76,13 @@ public:
     int connect_async(int udp_port_bind, const std::string& server_ip, const int server_port);
 
     // 0: connect succeed,  1: need waiting connect end,   <0: connect fail, and it's error code.
-    int connect_result(void) const {return connect_result_;}
+    int connect_result(void) const
+    {
+        return connect_result_;
+    }
 
     //
     // end of Async connect
-
 
     // user level send msg.
     void send_msg(const std::string& msg);
@@ -91,11 +90,9 @@ public:
     void stop();
 
 private:
-
     // Node: changed!  Would not need call this start_workthread() function.
     // connect() and connect_async() function will call start_workthread for your.
     void start_workthread(void);
-
 
     static void client_event_callback_func(kcp_conv_t conv, eEventType event_type, const std::string& msg, void* var);
     void handle_client_event_callback(kcp_conv_t conv, eEventType event_type, const std::string& msg);
@@ -110,7 +107,6 @@ private:
     int connect_result_; // 0: connect succeed,  1: need waiting connect end,   <0: connect fail, and it's error code.
     client_event_callback_t* pevent_func_;
     void* event_func_var_;
-
 
     pthread_t workthread_;
     volatile bool workthread_want_stop_;

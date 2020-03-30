@@ -98,7 +98,6 @@ endif()
 #---------------------------------------------------------------------------------------
 message(STATUS "Current system is [${CMAKE_SYSTEM}]")
 message(STATUS "ROOT_DIR=${ROOT_DIR}")
-#message(STATUS "DEP_LIB_DIR=${DEP_LIB_DIR}")
 message(STATUS "BIN_OUTPUT_DIR=${BIN_OUTPUT_DIR}")
 message(STATUS "CMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}")
 

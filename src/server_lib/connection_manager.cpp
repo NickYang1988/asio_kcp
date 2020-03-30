@@ -1,4 +1,3 @@
-#include "connection_manager.hpp"
 #include <algorithm>
 #include <boost/bind.hpp>
 
@@ -7,6 +6,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+#include "connection_manager.hpp"
 #include "essential/utility/strutil.h"
 #include "essential/check_function.h"
 #include "kcp/ikcp.h"
@@ -101,14 +101,17 @@ void connection_manager::handle_connect_packet()
 
 void connection_manager::handle_kcp_packet(size_t bytes_recvd)
 {
-    IUINT32 conv;
-    int ret = ikcp_get_conv(udp_data_, bytes_recvd, &conv);
-    if (ret == 0)
-    {
-        assert_check(false, "ikcp_get_conv return 0");
-        return;
-    }
+    // IUINT32 conv;
+    // int ret = ikcp_get_conv(udp_data_, bytes_recvd, &conv);
+    // if (ret == 0)
+    // {
+    //     assert_check(false, "ikcp_get_conv return 0");
+    //     return;
+    // }
 
+    // TODO: need TEST
+    // new interface name
+    IUINT32 conv = ikcp_getconv(udp_data_);
     connection::shared_ptr conn_ptr = connections_.find_by_conv(conv);
     if (!conn_ptr)
     {

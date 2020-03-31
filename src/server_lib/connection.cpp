@@ -69,6 +69,8 @@ void connection::init_kcp(const kcp_conv_t& conv)
     // 第五个参数 为是否禁用常规流控，这里禁止
     //ikcp_nodelay(p_kcp_, 1, 10, 2, 1);
     ikcp_nodelay(p_kcp_, 1, 5, 1, 1); // 设置成1次ACK跨越直接重传, 这样反应速度会更快. 内部时钟5毫秒.
+    ikcp_wndsize(p_kcp_, 256, 256);
+    ikcp_setmtu(p_kcp_, 470);
 }
 
 // 发送一个 udp包

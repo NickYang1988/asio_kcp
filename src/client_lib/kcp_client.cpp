@@ -71,7 +71,12 @@ void kcp_client::init_kcp(kcp_conv_t conv)
     // 第四个参数 resend为快速重传指标，设置为2
     // 第五个参数 为是否禁用常规流控，这里禁止
     //ikcp_nodelay(p_kcp_, 1, 10, 2, 1);
-    ikcp_nodelay(p_kcp_, 1, 2, 1, 1); // 设置成1次ACK跨越直接重传, 这样反应速度会更快. 内部时钟5毫秒.
+
+    // TODO: check
+    // 设置成1次ACK跨越直接重传, 这样反应速度会更快. 内部时钟5毫秒.
+    ikcp_nodelay(p_kcp_, 1, 5, 1, 1); // 3rd param 5 means interval time is 5 ms
+    ikcp_wndsize(p_kcp_, 256, 256);
+    ikcp_setmtu(p_kcp_, 470);
 }
 
 int kcp_client::connect_async(int udp_port_bind, const std::string& server_ip, const int server_port)
@@ -277,6 +282,7 @@ int kcp_client::init_udp_connect(void)
 
     // set socket non-blocking
     {
+        // TODO: check it
         int flags = fcntl(udp_socket_, F_GETFL, 0);
         if (flags == -1)
         {
@@ -291,6 +297,7 @@ int kcp_client::init_udp_connect(void)
                       << std::endl;
             return KCP_ERR_SET_NON_BLOCK_FAIL;
         }
+        //udp_socket_.non_blocking(true);
     }
 
     // set recv buf bigger

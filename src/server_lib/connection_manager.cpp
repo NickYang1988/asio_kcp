@@ -53,8 +53,7 @@ connection_manager::connection_manager(boost::asio::io_service& io_service, cons
     , kcp_timer_(io_service)
     , cur_clock_(0)
 {
-    //udp_socket_.set_option(udp::socket::non_blocking_io(false)); // TODO: why this make compile fail
-    udp_socket_.non_blocking(false);
+    //udp_socket_.set_option(udp::socket::non_blocking_io(false)); // why this make compile fail
 
     hook_udp_async_receive();
     hook_kcp_timer();

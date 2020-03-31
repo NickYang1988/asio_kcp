@@ -12,6 +12,7 @@ class threadsafe_queue_mutex
 {
 private:
     std::queue<T> data_queue;
+    std::mutex mutex_;
 
 public:
     threadsafe_queue_mutex() {}
@@ -51,9 +52,6 @@ public:
         std::lock_guard guard(mutex_);
         return data_queue.empty();
     }
-
-private:
-    std::mutex mutex_;
 };
 
 } // namespace asio_kcp

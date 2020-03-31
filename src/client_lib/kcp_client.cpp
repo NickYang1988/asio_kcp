@@ -353,7 +353,8 @@ int kcp_client::udp_output(const char* buf, int len, ikcpcb* kcp, void* user)
 
 void kcp_client::send_udp_package(const char* buf, int len)
 {
-    std::cerr << "send_udp_package" << std::endl;
+    // LOG
+    //std::cerr << "send_udp_package" << std::endl;
     const ssize_t send_ret = send(udp_socket_, buf, len, 0);
     if (send_ret < 0)
     {
@@ -408,7 +409,8 @@ void kcp_client::handle_udp_packet(const std::string& udp_packet)
         if (msg.size() > 0)
         {
             // recved good msg.
-            std::cerr << "recv good kcp msg: " << msg << std::endl;
+            // LOG
+            //std::cerr << "recv good kcp msg: " /*<< msg*/ << std::endl;
             if (pevent_func_ != NULL)
             {
                 (*pevent_func_)(p_kcp_->conv, eRcvMsg, msg, event_callback_var_);

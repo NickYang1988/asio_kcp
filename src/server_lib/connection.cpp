@@ -45,8 +45,9 @@ connection::shared_ptr connection::create(const std::weak_ptr<connection_manager
     {
         ptr->init_kcp(conv);
         ptr->set_udp_remote_endpoint(udp_remote_endpoint);
-        AK_INFO_LOG << "new connection from: " << udp_remote_endpoint;
+        AK_INFO_LOG << "new connection from: " << udp_remote_endpoint << std::endl;
     }
+
     return ptr;
 }
 
@@ -125,20 +126,21 @@ void connection::input(char* udp_data, size_t bytes_recvd, const udp::endpoint& 
     */
 
     {
-        char kcp_buf[1024 * 1000] = "";
+        char kcp_buf[1024 * 1000] = {};
         int kcp_recvd_bytes = ikcp_recv(p_kcp_, kcp_buf, sizeof(kcp_buf));
         if (kcp_recvd_bytes <= 0)
         {
-            std::cout << "\nkcp_recvd_bytes<=0: " << kcp_recvd_bytes << std::endl;
+            //std::cout << "\nkcp_recvd_bytes <= 0: " << kcp_recvd_bytes << std::endl;
         }
         else
         {
             const std::string package(kcp_buf, kcp_recvd_bytes);
-            std::cout << "\n"
-                      << last_packet_recv_time_ << " conv:" << conv_
-                      << " lag_time:" << get_cur_clock() - last_packet_recv_time_ << " kcp recv: " << kcp_recvd_bytes
-                      << std::endl
-                      << ToHexDumpText(package, 32) << std::endl;
+            // LOG
+            // std::cout << "\n"
+            //           << last_packet_recv_time_ << " conv:" << conv_
+            //           << " lag_time:" << get_cur_clock() - last_packet_recv_time_ << " kcp recv: " << kcp_recvd_bytes
+            //           << std::endl
+            //           << ToHexDumpText(package, 32) << std::endl;
             if (auto ptr = connection_manager_weak_ptr_.lock())
             {
                 ptr->call_event_callback_func(conv_, eRcvMsg, std::make_shared<std::string>(package));

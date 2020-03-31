@@ -50,8 +50,7 @@ void server::handle_stop()
 
 void server::event_callback(kcp_conv_t conv, asio_kcp::eEventType event_type, std::shared_ptr<std::string> msg)
 {
-    std::cout << "event_callback:" << conv << " type:" << asio_kcp::eventTypeStr(event_type) << "msg: " << *msg
-              << std::endl;
+    //std::cout << "event_callback:" << conv << " type:" << asio_kcp::eventTypeStr(event_type) << "msg: " << *msg << std::endl;
     if (event_type == asio_kcp::eRcvMsg)
     {
         // auto send back msg for testing.

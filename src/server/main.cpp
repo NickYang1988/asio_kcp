@@ -6,21 +6,6 @@
 #include "server_lib/asio_kcp_log.hpp"
 #include "server.hpp"
 
-// #include <muduo/base/Logging.h>
-// #include <muduo/base/LogFile.h>
-// #include <muduo/base/ThreadPool.h>
-// #include <muduo/base/TimeZone.h>
-
-//int g_total = 0;
-// boost::scoped_ptr<muduo::LogFile> g_logFile;
-
-// void dummyOutput(const char* msg, int len)
-// {
-//     g_total += len;
-//     if (g_logFile)
-//         g_logFile->append(msg, len);
-// }
-
 int main(int argc, char* argv[])
 {
     try
@@ -28,33 +13,15 @@ int main(int argc, char* argv[])
         // Check command line arguments.
         if (argc != 3)
         {
-            std::cerr << "Usage: server <address> <port>\n";
+            std::cerr << "Usage: ./server <address> <port>\n";
             std::cerr << "  For IPv4, try:\n";
-            std::cerr << "    server 0.0.0.0 80\n";
+            std::cerr << "    ./server 0.0.0.0 9090\n";
             std::cerr << "  For IPv6, try:\n";
-            std::cerr << "    server 0::0 80\n";
+            std::cerr << "    ./server 0::0 9090\n";
             return 1;
         }
 
-        //system("mkdir /var/log/asio_kcp");
-
-        // // g2log
-        // //
-        // std::string path_to_log_file("/var/log/asio_kcp_log/");
-        // g2LogWorker logger(argv[0], path_to_log_file);
-        // g2::initializeLogging(&logger);
-        // AK_LOG(INFO) << "Start";
-
-        // // muduo log
-        // //
-        // std::string basename = "/var/log/asio_kcp_log/ak_muduo_log";
-        // size_t rollSize = 500 * 1000 * 1000;
-        // bool threadSafe = true;
-        // int flushInterval = 3; // seconds
-        // int checkEveryN = 1024;
-        // g_logFile.reset(new ::muduo::LogFile(basename, rollSize, threadSafe, flushInterval, checkEveryN));
-        // muduo::Logger::setOutput(dummyOutput);
-        AK_INFO_LOG << "start";
+        AK_INFO_LOG << "start" << std::endl;
 
         // Initialise the server.
         server s(argv[1], argv[2]);

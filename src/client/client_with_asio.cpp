@@ -12,9 +12,9 @@
 #include "util/connect_packet.hpp"
 #include "client_with_asio.hpp"
 
-#define PACKAGE_LOSE_RATIO 0
-#define PACKAGE_CONTENT_DAMAGE_RATIO 0
-#define SEND_TEST_MSG_INTERVAL 1000
+//#define PACKAGE_LOSE_RATIO 0
+//#define PACKAGE_CONTENT_DAMAGE_RATIO 0
+#define SEND_TEST_MSG_INTERVAL 300 // 300 milliseconds
 
 /* get system time */
 static inline void itimeofday(long* sec, long* usec)
@@ -260,7 +260,8 @@ void client_with_asio::handle_client_event_callback(kcp_conv_t conv, eEventType 
             stopped_ = true;
             break;
         case eRcvMsg:
-            std::cout << "recv eRcvMsg with conv:" << conv << "  msg_count: " << msg.size() << std::endl;
+            // LOG
+            //std::cout << "recv eRcvMsg with conv:" << conv << "  msg_count: " << msg.size() << std::endl;
             break;
         case eDisconnect:
             std::cout << "disconnect with conv:" << conv << " msg: " << msg << std::endl;

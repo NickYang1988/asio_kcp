@@ -1,4 +1,4 @@
-set(project_name client_with_asio)
+set(project_name client)
 
 if(UNIX AND (NOT APPLE))
     #Set rpath
@@ -8,6 +8,7 @@ endif(UNIX AND (NOT APPLE))
 
 file(GLOB_RECURSE SRC_LIST *.h *.hpp *.cpp *.cc *.c)
 add_executable(${project_name} ${SRC_LIST})
+add_dependencies(${project_name} kcp_client)
 
 if(WIN32)
     target_link_libraries(${project_name} 

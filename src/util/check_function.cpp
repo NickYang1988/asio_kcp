@@ -1,12 +1,12 @@
 #include <exception>
 #include "check_function.h"
 
-namespace Essential {
+namespace asio_kcp {
 
 ::std::string make_check_message(
     const char* const expression, const char* const fileName, int line, const char* const message)
 {
-    char moduleName[1024] = {};
+    char moudleName[1024] = {};
     char showMessage[1024 * 4] = {};
     snprintf(showMessage, sizeof(showMessage) / sizeof(char),
         "\r\n"
@@ -18,7 +18,7 @@ namespace Essential {
         "Expression:  %s\r\n"
         "Message:     %s\r\n"
         "--------------------------------------------- ASSERT END\r\n\r\n",
-        moduleName, fileName, line, expression, message);
+        moudleName, fileName, line, expression, message);
 
     return ::std::string(showMessage);
 }
@@ -48,4 +48,4 @@ void _assert_check(
     }
 }
 
-} // namespace Essential
+} // namespace asio_kcp

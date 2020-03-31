@@ -1,6 +1,8 @@
 #include "test_util.h"
 #include <sstream>
 
+namespace asio_kcp {
+
 std::string test_str(const std::string& str_prefix, const size_t str_len)
 {
     std::ostringstream ostr;
@@ -56,3 +58,5 @@ std::string test_str(const std::string& str_prefix, const size_t str_len)
 
     return str;
 }
+
+} // namespace asio_kcp

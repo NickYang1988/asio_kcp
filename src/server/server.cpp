@@ -1,7 +1,6 @@
-#include <signal.h>
+#include <csignal>
 #include <cstdlib>
 #include <iostream>
-#include "essential/strutil.h"
 #include "server.hpp"
 
 server::server(const std::string& address, const std::string& port)
@@ -49,13 +48,14 @@ void server::handle_stop()
     stopped_ = true;
 }
 
-void server::event_callback(kcp_conv_t conv, kcp_svr::eEventType event_type, std::shared_ptr<std::string> msg)
+void server::event_callback(kcp_conv_t conv, asio_kcp::eEventType event_type, std::shared_ptr<std::string> msg)
 {
-    std::cout << "event_callback:" << conv << " type:" << kcp_svr::eventTypeStr(event_type) << "msg: " << *msg
+    std::cout << "event_callback:" << conv << " type:" << asio_kcp::eventTypeStr(event_type) << "msg: " << *msg
               << std::endl;
-    if (event_type == kcp_svr::eRcvMsg)
+    if (event_type == asio_kcp::eRcvMsg)
     {
         // auto send back msg for testing.
+        // ping-pong testing
         kcp_server_.send_msg(conv, msg);
     }
 }
@@ -73,7 +73,8 @@ void server::hook_test_timer(void)
 
 void server::handle_test_timer(void)
 {
-    //std::cout << "."; std::cout.flush();
+    //std::cout << ".";
+    //std::cout.flush();
     hook_test_timer();
 
     // Test

@@ -6,12 +6,10 @@
 #include <boost/bind.hpp>
 
 #include "kcp/ikcp.h"
-
-#include "essential/strutil.h"
-#include "essential/check_function.h"
+#include "util/strutil.h"
 #include "util/connect_packet.hpp"
-#include "asio_kcp_log.hpp"
 
+#include "asio_kcp_log.hpp"
 #include "connection_manager.hpp"
 
 /* get system time */
@@ -40,7 +38,7 @@ static inline uint32_t iclock()
     return (uint32_t)(iclock64() & 0xfffffffful);
 }
 
-namespace kcp_svr {
+namespace asio_kcp {
 
 uint64_t endpoint_to_i(const udp::endpoint& ep)
 {
@@ -96,7 +94,7 @@ void connection_manager::call_event_callback_func(
 void connection_manager::handle_connect_packet()
 {
     kcp_conv_t conv = connections_.get_new_conv();
-    std::string send_back_msg = asio_kcp::making_send_back_conv_packet(conv);
+    std::string send_back_msg = making_send_back_conv_packet(conv);
     udp_socket_.send_to(boost::asio::buffer(send_back_msg), udp_remote_endpoint_);
     connections_.add_new_connection(shared_from_this(), conv, udp_remote_endpoint_);
 }
@@ -127,16 +125,16 @@ void connection_manager::handle_udp_receive_from(const boost::system::error_code
         unsigned long addr_i = udp_remote_endpoint_.address().to_v4().to_ulong();
         std::cout << addr_i << " " << udp_remote_endpoint_.port() << std::endl;
         std::cout << "udp recv: " << bytes_recvd << std::endl <<
-            Essential::ToHexDumpText(std::string(udp_data_, bytes_recvd), 32) << std::endl;
+            ToHexDumpText(std::string(udp_data_, bytes_recvd), 32) << std::endl;
         */
 
 #if AK_ENABLE_UDP_PACKET_LOG
         AK_UDP_PACKET_LOG << "udp_recv:" << udp_remote_endpoint_.address().to_string() << ":"
                           << udp_remote_endpoint_.port() << " conv:" << 0 << " size:" << bytes_recvd << "\n"
-                          << Essential::ToHexDumpText(std::string(udp_data_, bytes_recvd), 32);
+                          << ToHexDumpText(std::string(udp_data_, bytes_recvd), 32);
 #endif
 
-        if (asio_kcp::is_connect_packet(udp_data_, bytes_recvd))
+        if (is_connect_packet(udp_data_, bytes_recvd))
         {
             handle_connect_packet();
             goto END;
@@ -193,4 +191,4 @@ int connection_manager::send_msg(const kcp_conv_t& conv, std::shared_ptr<std::st
     return 0;
 }
 
-} // namespace kcp_svr
+} // namespace asio_kcp

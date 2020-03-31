@@ -2,9 +2,9 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
-#include "essential/strutil.h"
 #include "client_with_asio.hpp"
 
+using namespace asio_kcp;
 using boost::asio::ip::tcp;
 
 enum

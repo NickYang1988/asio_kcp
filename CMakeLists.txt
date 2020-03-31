@@ -118,7 +118,6 @@ include_directories(
     ${ROOT_DIR}/3rdparty/googletest/googlemock/include
     ${Boost_INCLUDE_DIRS}
     ${ROOT_DIR}/src
-    ${ROOT_DIR}/src/essential
     ${ROOT_DIR}/src/util
 )
 
@@ -127,9 +126,8 @@ link_directories(${BIN_OUTPUT_DIR})
 #---------------------------------------------------------------------------------------
 # Building asio_kcp source.
 #---------------------------------------------------------------------------------------
-add_subdirectory(src/essential)
 add_subdirectory(src/client_lib)
-add_subdirectory(src/client_with_asio)
+add_subdirectory(src/client)
 add_subdirectory(src/server_lib)
 add_subdirectory(src/server)
 

@@ -1,7 +1,6 @@
-#ifndef _KCP_CONNECT_PACKET_HPP_
-#define _KCP_CONNECT_PACKET_HPP_
+#pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 
 namespace asio_kcp {
@@ -18,5 +17,3 @@ bool is_disconnect_packet(const char* data, size_t len);
 uint32_t grab_conv_from_disconnect_packet(const char* data, size_t len);
 
 } // namespace asio_kcp
-
-#endif // _KCP_CONNECT_PACKET_HPP_

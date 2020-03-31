@@ -4,11 +4,11 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#include "connection_container.hpp"
-#include "essential/strutil.h"
 #include "kcp/ikcp.h"
 
-namespace kcp_svr {
+#include "connection_container.hpp"
+
+namespace asio_kcp {
 
 connection_container::connection_container(void) {}
 
@@ -72,4 +72,4 @@ kcp_conv_t connection_container::get_new_conv(void) const
     return static_cur_conv;
 }
 
-} // namespace kcp_svr
+} // namespace asio_kcp

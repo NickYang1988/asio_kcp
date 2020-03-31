@@ -1,18 +1,16 @@
 #pragma once
 
+#include <cstdio>
+#include <cstring>
 #include <exception>
 #include <string>
-#include <string.h>
-#include <stdio.h>
-#include "es_config.h"
 
-BEGIN_ES_NAMESPACE
+namespace asio_kcp {
 
 #ifdef _UTEST_
 #define assert_check(check, expression) exception_assert(bool(check), (const char*)(expression))
 #else
-#define assert_check(condition, message)                                                                               \
-    Essential::_assert_check((condition), (#condition), (__FILE__), __LINE__, (message))
+#define assert_check(condition, message) _assert_check((condition), (#condition), (__FILE__), __LINE__, (message))
 #endif
 
 class AssertException
@@ -23,7 +21,6 @@ public:
         strncpy(m_What, _What, sizeof(m_What));
         m_What[1023] = 0;
     }
-
     ~AssertException() = default;
 
 private:
@@ -31,7 +28,7 @@ private:
 };
 
 #define exception_assert(condition, message)                                                                           \
-    Essential::_excption_check<Essential::AssertException>((condition), (#condition), (__FILE__), __LINE__, (message))
+    _excption_check<Essential::AssertException>((condition), (#condition), (__FILE__), __LINE__, (message))
 
 #define do_check(checkFunction, condition, message)                                                                    \
     checkFunction((condition), (#condition), (__FILE__), __LINE__, (message))
@@ -60,4 +57,4 @@ void _excption_check(
     }
 }
 
-END_ES_NAMESPACE
+} // namespace asio_kcp

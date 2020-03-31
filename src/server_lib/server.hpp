@@ -6,7 +6,7 @@
 #include <boost/asio.hpp>
 #include "kcp_typedef.hpp"
 
-namespace kcp_svr {
+namespace asio_kcp {
 
 class connection_manager;
 
@@ -60,4 +60,4 @@ private:
     std::shared_ptr<connection_manager> connection_manager_ptr_;
 };
 
-} // namespace kcp_svr
+} // namespace asio_kcp

@@ -1,11 +1,10 @@
-#include <signal.h>
+#include <csignal>
 #include <cstdlib>
 
-#include "server.hpp"
-#include "essential/strutil.h"
 #include "connection_manager.hpp"
+#include "server.hpp"
 
-namespace kcp_svr {
+namespace asio_kcp {
 
 server::server(boost::asio::io_service& io_service, const std::string& address, const std::string& port)
     : io_service_(io_service)
@@ -42,4 +41,4 @@ int server::send_msg(const kcp_conv_t& conv, std::shared_ptr<std::string> msg)
     return connection_manager_ptr_->send_msg(conv, msg);
 }
 
-} // namespace kcp_svr
+} // namespace asio_kcp

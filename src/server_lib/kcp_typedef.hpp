@@ -11,7 +11,7 @@ typedef struct IKCPCB ikcpcb;
 // indicate a converse between a client and connection_obj between server.
 typedef uint32_t kcp_conv_t;
 
-namespace kcp_svr {
+namespace asio_kcp {
 
 enum eEventType
 {
@@ -26,4 +26,5 @@ enum eEventType
 const char* eventTypeStr(eEventType eventType);
 
 typedef void(event_callback_t)(kcp_conv_t /*conv*/, eEventType /*event_type*/, std::shared_ptr<std::string> /*msg*/);
-} // namespace kcp_svr
+
+} // namespace asio_kcp

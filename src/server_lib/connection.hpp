@@ -1,5 +1,4 @@
-#ifndef _KCP_CONNECTION_HPP_
-#define _KCP_CONNECTION_HPP_
+#pragma once
 
 #include <set>
 #include <unordered_map>
@@ -8,13 +7,12 @@
 #include <boost/asio.hpp>
 #include "kcp_typedef.hpp"
 
-namespace kcp_svr {
+namespace asio_kcp {
 
 using namespace boost::asio::ip;
 class connection_manager;
 
-class connection
-  : private boost::noncopyable
+class connection : private boost::noncopyable
 {
 public:
     typedef std::shared_ptr<connection> shared_ptr;
@@ -23,8 +21,8 @@ public:
     connection(const std::weak_ptr<connection_manager>& manager_ptr);
     ~connection(void);
 
-    static connection::shared_ptr create(const std::weak_ptr<connection_manager>& manager_ptr,
-            const kcp_conv_t& conv, const udp::endpoint& udp_remote_endpoint);
+    static connection::shared_ptr create(const std::weak_ptr<connection_manager>& manager_ptr, const kcp_conv_t& conv,
+        const udp::endpoint& udp_remote_endpoint);
 
     void set_udp_remote_endpoint(const udp::endpoint& udp_remote_endpoint);
 
@@ -45,8 +43,8 @@ public:
 private:
     void init_kcp(const kcp_conv_t& conv);
     void clean(void);
-    static int udp_output(const char *buf, int len, ikcpcb *kcp, void *user);
-    void send_udp_package(const char *buf, int len);
+    static int udp_output(const char* buf, int len, ikcpcb* kcp, void* user);
+    void send_udp_package(const char* buf, int len);
 
     uint32_t get_cur_clock(void) const;
     uint32_t get_timeout_time(void) const;
@@ -59,6 +57,4 @@ private:
     uint32_t last_packet_recv_time_;
 };
 
-} // namespace kcp_svr
-
-#endif // _KCP_CONNECTION_HPP_
+} // namespace asio_kcp

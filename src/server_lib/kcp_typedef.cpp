@@ -1,6 +1,6 @@
 #include "kcp_typedef.hpp"
 
-namespace kcp_svr {
+namespace asio_kcp {
 
 const char* eventTypeStr(eEventType eventType)
 {
@@ -19,4 +19,4 @@ const char* eventTypeStr(eEventType eventType)
     }
 }
 
-} // namespace kcp_svr
+} // namespace asio_kcp

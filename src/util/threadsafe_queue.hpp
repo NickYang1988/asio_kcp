@@ -5,9 +5,7 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "es_config.h"
-
-BEGIN_ES_NAMESPACE
+namespace asio_kcp {
 
 template<typename T>
 class threadsafe_queue
@@ -97,4 +95,4 @@ public:
     }
 };
 
-END_ES_NAMESPACE
+} // namespace asio_kcp

@@ -1,23 +1,23 @@
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
 #include <sstream>
 #include <iomanip>
 
 #include "check_function.h"
 #include "strutil.h"
 
-BEGIN_ES_NAMESPACE
+namespace asio_kcp {
 
 std::string GetFileSuffix(const std::string& fileName)
 {
     size_t dotIndex = fileName.rfind('.');
 
-    // 没有找到.号的情况
+    // û���ҵ�.�ŵ����
     if (dotIndex == std::string::npos)
         return "";
 
-    // .号在最后一个字符的情况
+    // .�������һ���ַ������
     if (dotIndex == fileName.size() - 1)
         return "";
 
@@ -33,11 +33,11 @@ std::string GetFileWithoutSuffix(const std::string& fileName)
 {
     size_t dotIndex = fileName.rfind('.');
 
-    // 没有找到.号的情况
+    // û���ҵ�.�ŵ����
     if (dotIndex == std::string::npos)
         return "";
 
-    // .号在最后一个字符的情况
+    // .�������һ���ַ������
     if (dotIndex == fileName.size() - 1)
         return "";
 
@@ -46,7 +46,7 @@ std::string GetFileWithoutSuffix(const std::string& fileName)
     return rst;
 }
 
-// 获取文件的路径名. 输入"c:\34.txt",输出"c:\"
+// ��ȡ�ļ���·����. ����"c:\34.txt",���"c:\"
 std::string GetFillPath_ByFullPathName(const std::string& fullPathName)
 {
     assert_check(fullPathName.size() > 0, "GetFillPath_ByFullPathName");
@@ -71,7 +71,7 @@ std::string GetFileNameWithoutPath(const std::string& fullPathName)
 }
 
 ///////////////////////////////////////////////////////////////////////
-// StrToData的实现代码
+// StrToData��ʵ�ִ���
 ///////////////////////////////////////////////////////////////////////
 //
 static long pow_i(int d, int n)
@@ -164,11 +164,11 @@ int ToHexDigit(char c)
 }
 
 ///////////////////////////////////////////////////////////////////////
-// ConvertToCStyleStr的实现代码
+// ConvertToCStyleStr��ʵ�ִ���
 ///////////////////////////////////////////////////////////////////////
 //
 
-#define __ENABLE_ASSERT_IN_STYLESTR_CVT__ // 测试时用来关闭 "C风格转换函数" 里面的assert的 。
+#define __ENABLE_ASSERT_IN_STYLESTR_CVT__ // ����ʱ�����ر� "C���ת������" �����assert�� ��
 
 //00 01 02 03 04 05 06 07  ........
 //08 09 0a 0b 0c 0d 0e 0f  ........
@@ -198,15 +198,15 @@ int ToHexDigit(char c)
         "v", "w", "x", "y", "z", "{", "|", "}", "~", "\\(7F)"};
 
     ::std::string rstString;
-    rstString.reserve(_Str.size() * 2); // 预分配多一点空间，防止string内部频繁重新分配内存
+    rstString.reserve(_Str.size() * 2); // Ԥ�����һ��ռ䣬��ֹstring�ڲ�Ƶ�����·����ڴ�
 
     for (size_t i = 0; i < _Str.size(); i++)
     {
         bool isAscIIChar = _Str[i] >= 0 && _Str[i] <= 0x7f;
         if (isAscIIChar)
-            rstString.append(shiftMap[size_t(_Str[i])]); // 英文字符
+            rstString.append(shiftMap[size_t(_Str[i])]); // Ӣ���ַ�
         else
-            rstString.append(1, _Str[i]); // 中文字符
+            rstString.append(1, _Str[i]); // �����ַ�
     }
     return rstString;
 }
@@ -270,7 +270,7 @@ std::string hexdump_oneline(const std::string& prefix, const std::string& line, 
 }
 
 ///////////////////////////////////////////////////////////////////////
-// ConvertFromCStyleStr的实现代码
+// ConvertFromCStyleStr��ʵ�ִ���
 ///////////////////////////////////////////////////////////////////////
 //
 
@@ -280,12 +280,12 @@ static bool IsHexNumber(const char& c)
     return (strchr(hexNumber, c) != NULL);
 }
 
-// pSrc传进来的是 "\(3F)" 格式的字符串
+// pSrc���������� "\(3F)" ��ʽ���ַ���
 static int ProcShiftCharByNum(char& dst, const char* const pSrc, int srcStrLen)
 {
     assert(pSrc != NULL);
 
-    // 检查是否标准格式 : "\(3F)"
+    // ����Ƿ��׼��ʽ : "\(3F)"
     //
     bool isAllowdFormat = false;
     if (srcStrLen < 5)
@@ -297,30 +297,30 @@ static int ProcShiftCharByNum(char& dst, const char* const pSrc, int srcStrLen)
     else
         isAllowdFormat = true;
 
-    // 处理非法情况
+    // �����Ƿ����
     //
     if (isAllowdFormat == false)
     {
 #ifdef __ENABLE_ASSERT_IN_STYLESTR_CVT__
-        assert(false); // 非法的格式. 故意让其只是debug版本才assert
+        assert(false); // �Ƿ��ĸ�ʽ. ��������ֻ��debug�汾��assert
 #endif
 
-        dst = pSrc[0]; // 对于不可识别的转义，将'\'符号按照非转义指示符来解析，并让游标指向'\'符号后一个字符
+        dst = pSrc[0]; // ���ڲ���ʶ���ת�壬��'\'���Ű��շ�ת��ָʾ���������������α�ָ��'\'���ź�һ���ַ�
         return 1;
     }
 
-    // 处理正确情况
+    // ������ȷ���
     //
     ::std::string hexNumString(&pSrc[2], 2);
     int hexNum = StrToData(hexNumString, 16);
     dst = (static_cast<unsigned char>(hexNum));
-    return 5; // 标准格式:"\(3F)" 刚好是占用5个字节
+    return 5; // ��׼��ʽ:"\(3F)" �պ���ռ��5���ֽ�
 }
 
-// pSrc传进来的是 "\r" "\n" "\t" "\\" 格式的字符串
+// pSrc���������� "\r" "\n" "\t" "\\" ��ʽ���ַ���
 static int ProcShiftCharByChar(char& dst, const char* const pSrc, int srcStrLen)
 {
-    // 检查格式
+    // ����ʽ
     if (srcStrLen < 2)
         goto ERR_END;
 
@@ -348,15 +348,15 @@ static int ProcShiftCharByChar(char& dst, const char* const pSrc, int srcStrLen)
 
 ERR_END : {
 #ifdef __ENABLE_ASSERT_IN_STYLESTR_CVT__
-    assert(false); // 非法的格式. 故意让其只是debug版本才assert
+    assert(false); // �Ƿ��ĸ�ʽ. ��������ֻ��debug�汾��assert
 #endif
 
-    dst = pSrc[0]; // 对于不可识别的转义，将'\'符号按照非转义指示符来解析，并让游标指向'\'符号后一个字符
+    dst = pSrc[0]; // ���ڲ���ʶ���ת�壬��'\'���Ű��շ�ת��ָʾ���������������α�ָ��'\'���ź�һ���ַ�
     return 1;
 }
 }
 
-// 返回游标应该移动几个位置.
+// �����α�Ӧ���ƶ�����λ��.
 static int ProcShiftChar(char& dst, const char* pSrc, int srcStrLen)
 {
     switch (pSrc[1])
@@ -373,12 +373,11 @@ static int ProcShiftChar(char& dst, const char* pSrc, int srcStrLen)
         default:
 
 #ifdef __ENABLE_ASSERT_IN_STYLESTR_CVT__
-            assert(false); // 非法的格式. 故意让其只是debug版本才assert
+            assert(false); // �Ƿ��ĸ�ʽ. ��������ֻ��debug�汾��assert
 #endif
 
-            // 处理不可识别的转义
-            dst = pSrc
-                [0]; // 对于 \s 这样不可识别的转义，将'\'符号按照非转义指示符来解析，并让游标指向's'。 即：结果串将显示的是"\s"
+            // ��������ʶ���ת��
+            dst = pSrc[0]; // ���� \s ��������ʶ���ת�壬��'\'���Ű��շ�ת��ָʾ���������������α�ָ��'s'�� �������������ʾ����"\s"
             return 1;
     }
 }
@@ -386,7 +385,7 @@ static int ProcShiftChar(char& dst, const char* pSrc, int srcStrLen)
 ::std::string ConvertFromCStyleStr(const ::std::string& _CStyleStr)
 {
     ::std::string rstString;
-    rstString.reserve(_CStyleStr.size()); // 预分配空间，防止string内部频繁重新分配内存
+    rstString.reserve(_CStyleStr.size()); // Ԥ����ռ䣬��ֹstring�ڲ�Ƶ�����·����ڴ�
 
     size_t cStyleStrIndex = 0;
     while (cStyleStrIndex < _CStyleStr.size())
@@ -472,4 +471,4 @@ std::string CutAllSpace(const std::string& srcStr)
     return noSpaceStr;
 }
 
-END_ES_NAMESPACE
+} // namespace asio_kcp

@@ -4,14 +4,14 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#include "essential/strutil.h"
 #include "kcp/ikcp.h"
 #include "util/connect_packet.hpp"
+#include "util/strutil.h"
 #include "asio_kcp_log.hpp"
 #include "connection_manager.hpp"
 #include "connection.hpp"
 
-namespace kcp_svr {
+namespace asio_kcp {
 
 //using namespace boost::asio::ip;
 connection::connection(const std::weak_ptr<connection_manager>& manager_ptr)
@@ -30,7 +30,7 @@ connection::~connection(void)
 void connection::clean(void)
 {
     std::cout << "clean connection conv:" << conv_ << std::endl;
-    std::string disconnect_msg = asio_kcp::making_disconnect_packet(conv_);
+    std::string disconnect_msg = making_disconnect_packet(conv_);
     send_udp_package(disconnect_msg.c_str(), disconnect_msg.size());
     ikcp_release(p_kcp_);
     p_kcp_ = NULL;
@@ -86,7 +86,7 @@ void connection::send_udp_package(const char* buf, int len)
 #if AK_ENABLE_UDP_PACKET_LOG
         std::cout << "udp_send:" << udp_remote_endpoint_.address().to_string() << ":" << udp_remote_endpoint_.port()
                   << " conv:" << conv_ << " size:" << len << "\n"
-                  << Essential::ToHexDumpText(std::string(buf, len), 32);
+                  << ToHexDumpText(std::string(buf, len), 32);
 #endif
     }
 }
@@ -118,7 +118,7 @@ void connection::input(char* udp_data, size_t bytes_recvd, const udp::endpoint& 
             break;
         }
         const std::string package(kcp_buf, kcp_recvd_bytes);
-        std::cout << "\nkcp recv: " << kcp_recvd_bytes << std::endl << Essential::ToHexDumpText(package, 32) << std::endl;
+        std::cout << "\nkcp recv: " << kcp_recvd_bytes << std::endl << ToHexDumpText(package, 32) << std::endl;
 
         ikcp_input(p_kcp_, "", 0);
     }
@@ -138,7 +138,7 @@ void connection::input(char* udp_data, size_t bytes_recvd, const udp::endpoint& 
                       << last_packet_recv_time_ << " conv:" << conv_
                       << " lag_time:" << get_cur_clock() - last_packet_recv_time_ << " kcp recv: " << kcp_recvd_bytes
                       << std::endl
-                      << Essential::ToHexDumpText(package, 32) << std::endl;
+                      << ToHexDumpText(package, 32) << std::endl;
             if (auto ptr = connection_manager_weak_ptr_.lock())
             {
                 ptr->call_event_callback_func(conv_, eRcvMsg, std::make_shared<std::string>(package));
@@ -183,4 +183,4 @@ uint32_t connection::get_cur_clock(void) const
     return 0;
 }
 
-} // namespace kcp_svr
+} // namespace asio_kcp

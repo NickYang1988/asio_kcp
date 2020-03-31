@@ -1,10 +1,9 @@
-#ifndef _SERVER_HPP
-#define _SERVER_HPP
+#pragma once
 
 #include <boost/asio.hpp>
 #include <string>
 #include <boost/noncopyable.hpp>
-#include "../server_lib/server.hpp"
+#include "server_lib/server.hpp"
 
 class server : private boost::noncopyable
 {
@@ -20,7 +19,7 @@ private:
     /// Handle a request to stop the server.
     void handle_stop();
 
-    void event_callback(kcp_conv_t conv, kcp_svr::eEventType event_type, std::shared_ptr<std::string> msg);
+    void event_callback(kcp_conv_t conv, asio_kcp::eEventType event_type, std::shared_ptr<std::string> msg);
 
     void hook_test_timer(void);
     void handle_test_timer(void);
@@ -36,9 +35,7 @@ private:
     bool stopped_;
 
     /// The connection manager which owns all live connections.
-    kcp_svr::server kcp_server_;
+    asio_kcp::server kcp_server_;
 
     boost::asio::deadline_timer test_timer_;
 };
-
-#endif // _SERVER_HPP

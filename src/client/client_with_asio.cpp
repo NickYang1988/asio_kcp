@@ -1,4 +1,4 @@
-#include "client_with_asio.hpp"
+
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
@@ -7,10 +7,10 @@
 #include <time.h>
 #include <unordered_map>
 
-#include "essential/strutil.h"
 #include "kcp/ikcp.h"
 #include "test_util.h"
 #include "util/connect_packet.hpp"
+#include "client_with_asio.hpp"
 
 #define PACKAGE_LOSE_RATIO 0
 #define PACKAGE_CONTENT_DAMAGE_RATIO 0
@@ -50,6 +50,12 @@ static inline IUINT32 iclock()
 
 #define CLOCK_START_STR "!ha"
 #define CLOCK_INTERVAL_STR "_ha"
+
+using namespace boost::asio::ip;
+//using namespace asio_kcp;
+
+namespace asio_kcp {
+
 std::string make_test_str(size_t test_str_size)
 {
     std::ostringstream ostr;
@@ -86,7 +92,7 @@ uint64_t get_time_from_msg(const std::string& msg)
 std::unordered_map<uint64_t /*package_send_time*/, size_t /*send_counter*/> g_package_send_counter;
 uint64_t search_time_from_kcp_str(const std::string& kcp_str)
 {
-    //std::cout << "udp send: " << kcp_str.size() << std::endl << Essential::ToHexDumpText(kcp_str, 32) << std::endl;
+    //std::cout << "udp send: " << kcp_str.size() << std::endl << ToHexDumpText(kcp_str, 32) << std::endl;
 
     auto end_iter = kcp_str.find(CLOCK_INTERVAL_STR);
     if (end_iter == std::string::npos)
@@ -106,9 +112,6 @@ size_t g_count_send_kcp_packet = 0;
 
 uint64_t g_count_send_udp_size = 0;
 uint64_t g_count_send_kcp_size = 0;
-
-using namespace boost::asio::ip;
-using namespace asio_kcp;
 
 client_with_asio::client_with_asio(boost::asio::io_service& io_service, int udp_port_bind, const std::string& server_ip,
     const int server_port, const size_t test_str_size)
@@ -266,3 +269,5 @@ void client_with_asio::handle_client_event_callback(kcp_conv_t conv, eEventType 
         default:; // do nothing
     }
 }
+
+} // namespace asio_kcp

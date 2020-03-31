@@ -1,5 +1,4 @@
-#ifndef _KCP_CONNECTION_MANAGER_HPP_
-#define _KCP_CONNECTION_MANAGER_HPP_
+#pragma once
 
 #include <set>
 #include <unordered_map>
@@ -8,7 +7,7 @@
 
 #include "connection_container.hpp"
 
-namespace kcp_svr {
+namespace asio_kcp {
 
 class connection_manager : private boost::noncopyable, public std::enable_shared_from_this<connection_manager>
 {
@@ -71,6 +70,4 @@ private:
     connection_container connections_;
 };
 
-} // namespace kcp_svr
-
-#endif // _KCP_CONNECTION_MANAGER_HPP_
+} // namespace asio_kcp

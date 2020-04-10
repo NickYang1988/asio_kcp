@@ -171,6 +171,10 @@ void kcp_client::try_recv_connect_back_packet(void)
     char recv_buf[1400] = ""; // connect udp packet will not bigger than 1400.
     const ssize_t ret_recv =
         recv(udp_socket_, recv_buf, sizeof(recv_buf), 0); // recv timeout is 2 milliseconds. - SO_RCVTIMEO
+
+    // if defined USE_KCP, we need check if server side return a specific msg to know if connected.
+    // normal UDP just seed traffic directly.
+#ifdef USE_KCP
     if (ret_recv < 0)
     {
         int err = errno;
@@ -180,10 +184,13 @@ void kcp_client::try_recv_connect_back_packet(void)
                   << std::endl;
     }
     if (ret_recv > 0 && asio_kcp::is_send_back_conv_packet(recv_buf, ret_recv))
+#endif
     {
         // connect ok.
 
-        kcp_conv_t conv = asio_kcp::grab_conv_from_send_back_conv_packet(recv_buf, ret_recv);
+        //kcp_conv_t conv = asio_kcp::grab_conv_from_send_back_conv_packet(recv_buf, ret_recv);
+        static kcp_conv_t temp_conv_id = 1000;
+        kcp_conv_t conv = temp_conv_id++;
 
         std::cerr << "connect succeed in " << iclock64() - connect_start_time_ << " milliseconds"
                   << " conv:" << conv << std::endl;

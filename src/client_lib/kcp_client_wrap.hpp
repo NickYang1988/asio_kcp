@@ -1,5 +1,6 @@
 #pragma once
 
+#include <thread>
 #include "kcp_client.hpp"
 
 namespace asio_kcp {
@@ -107,7 +108,8 @@ private:
     client_event_callback_t* pevent_func_;
     void* event_func_var_;
 
-    pthread_t workthread_;
+    //pthread_t workthread_;
+    std::thread workthread_;
     volatile bool workthread_want_stop_;
     volatile bool workthread_stopped_; // indicate that the workthread stopped already.
     volatile bool workthread_start_;

@@ -133,6 +133,7 @@ void client_with_asio::stop_all()
 
 void client_with_asio::send_test_msg(void)
 {
+    std::cout << "send msg" << std::endl;
     kcp_client_.send_msg(make_test_str(test_str_size_));
 }
 

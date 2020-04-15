@@ -9,7 +9,6 @@ kcp_client_wrap::kcp_client_wrap(void)
     : connect_result_(1)
     , pevent_func_(NULL)
     , event_func_var_(NULL)
-    , workthread_(0)
     , workthread_want_stop_(false)
     , workthread_stopped_(false)
     , workthread_start_(false)
@@ -105,17 +104,20 @@ void kcp_client_wrap::start_workthread(void)
         return;
     }
 
-    int ret = pthread_create(&workthread_, NULL, &kcp_client_wrap::workthread_loop, (void*)this);
-    if (ret != 0)
-    {
-        std::cerr << "start_workthread pthread_create error: " << ret << std::endl;
-        return;
-    }
+    //int ret = pthread_create(&workthread_, NULL, &kcp_client_wrap::workthread_loop, (void*)this);
+    workthread_ = std::thread(&kcp_client_wrap::workthread_loop, this);
+    // if (ret != 0)
+    // {
+    //     std::cerr << "start_workthread pthread_create error: " << ret << std::endl;
+    //     return;
+    // }
 
     // waiting thread start
     {
         while (!workthread_start_)
+        {
             millisecond_sleep(1);
+        }
     }
 }
 
@@ -159,9 +161,10 @@ void kcp_client_wrap::stop()
         workthread_want_stop_ = true;
         while (workthread_stopped_ == false)
             millisecond_sleep(1);
-        void* status;
-        pthread_join(workthread_, &status);
+
+        workthread_.join();
     }
+
     kcp_client_.stop();
 }
 
